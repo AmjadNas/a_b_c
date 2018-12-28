@@ -89,6 +89,7 @@ public class Comment {
         cv.put(Constants.STORY_TITLE, StoryTiele);
         cv.put(Constants.TITLE, chapterTitle);
         cv.put(Constants.USERNAME, username);
+        cv.put(Constants.COMMENT, comment);
         cv.put(Constants.DATE, DateUtil.formatDateTime(dateFormat));
 
         return cv;

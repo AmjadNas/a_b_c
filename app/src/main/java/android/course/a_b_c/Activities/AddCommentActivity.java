@@ -78,7 +78,7 @@ public class AddCommentActivity extends AppCompatActivity implements NetworkResL
         if (!txtComment.isEmpty()) {
             if (viewType.equals(Constants.COMMENTS)) {
                 if (DataHandler.getInstance().insertComment(stTtitle, title, txtComment)) {
-                    comments.add(0, new Comment(stTtitle, title, DataHandler.getInstance().getUser().getUsername(), comment.getText().toString()));
+                    comments.add(0, new Comment(title, stTtitle, DataHandler.getInstance().getUser().getUsername(), comment.getText().toString()));
                     adapter.notifyItemInserted(0);
                 }
 

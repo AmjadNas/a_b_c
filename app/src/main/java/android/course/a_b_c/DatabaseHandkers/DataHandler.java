@@ -718,7 +718,7 @@ public class DataHandler implements NetworkResListener {
     }
 
     public boolean insertComment(String stTtitle, String title, String txtComment) {
-        Comment comment = new Comment(stTtitle, title, user.getUsername(), txtComment);
+        Comment comment = new Comment(title, stTtitle, user.getUsername(), txtComment);
         if (db.insert(Constants.COMMENTS, comment.getContentValues())){
             NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.INSERT_COMMENT, comment, this);
             return getChapter(stTtitle, title).addComment(comment);
@@ -755,11 +755,15 @@ public class DataHandler implements NetworkResListener {
     }
 
     public int replaceStory(List<Story> stories, String s) {
-        int i = stories.indexOf(new Story(s));
-        Story story = stories.remove(i);
-        stories.add(i, story);
+        try {
+            int i = stories.indexOf(new Story(s));
+            Story story = db.getStoryByID(stories.remove(i).getTitle());
+            stories.add(i, story);
 
-        return i;
+            return i;
+        }catch (Exception e){
+            return -1;
+        }
     }
 
     public void deleteMessage(Message m) {

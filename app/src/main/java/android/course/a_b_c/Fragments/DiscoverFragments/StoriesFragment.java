@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.course.a_b_c.Activities.ChaptersListActivity;
 import android.course.a_b_c.Activities.NewStoryActivity;
 import android.course.a_b_c.Adapters.GridSpacingItemDecoration;
 import android.course.a_b_c.Adapters.StoriesAdapter;
@@ -158,8 +159,9 @@ public class StoriesFragment extends Fragment implements View.OnClickListener, N
                 int i = DataHandler.getInstance().replaceStory(stories, s);
                 if (i >= 0)
                     adapter.notifyItemChanged(i);
-
             }
+        }else if (resultCode == ChaptersListActivity.CHAPTER_ADDED) {
+
         }
     }
 

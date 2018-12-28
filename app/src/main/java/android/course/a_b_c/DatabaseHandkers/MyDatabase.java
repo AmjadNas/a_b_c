@@ -323,8 +323,8 @@ public class MyDatabase extends SQLiteOpenHelper {
         try {
             Comment sc;
             String[] args = {
-                    Constants.STORY_TITLE,
                     Constants.TITLE,
+                    Constants.STORY_TITLE,
                     Constants.USERNAME,
                     Constants.COMMENT,
                     Constants.DATE
@@ -608,10 +608,9 @@ public class MyDatabase extends SQLiteOpenHelper {
     public void increaseLikes(String storyTitle) {
         try{
             Story story = getStoryByID(storyTitle);
-            story.setLikes(story.getLikes()+1);
             ContentValues cv = new ContentValues();
-            int i =  story.getLikes();
-            cv.put(Constants.LIKES, ++i);
+            int i =  story.getLikes()+1;
+            cv.put(Constants.LIKES, i);
             update(Constants.STORY, cv, Constants.TITLE + "=?", storyTitle);
         }catch (Throwable t){
             t.printStackTrace();
@@ -621,10 +620,9 @@ public class MyDatabase extends SQLiteOpenHelper {
     public void decreaseLikes(String storyTitle) {
         try{
             Story story = getStoryByID(storyTitle);
-            story.setLikes(story.getLikes()-1);
             ContentValues cv = new ContentValues();
-            int i =  story.getLikes();
-            cv.put(Constants.LIKES, --i);
+            int i =  story.getLikes()-1;
+            cv.put(Constants.LIKES, i);
             update(Constants.STORY, cv, Constants.TITLE + "=?", storyTitle);
         }catch (Throwable t){
             t.printStackTrace();

@@ -17,7 +17,9 @@ import android.support.v7.widget.Toolbar;
 
 public class ChaptersListActivity extends AppCompatActivity implements ChaptersFragment.OnFragmentInteractionListener {
 
+    public static final int CHAPTER_ADDED = -12;
     private ChapterFragmentAdapter adapter;
+    private boolean chapteradded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,19 @@ public class ChaptersListActivity extends AppCompatActivity implements ChaptersF
     public void onItemDeleted(Chapter c) {
 
         adapter.getDeleteFragment().addChapterToList(c);
+    }
+
+    @Override
+    public void chapterAdded(String c) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.STORY_TITLE, c);
+        setResult(RESULT_OK);
+
+    }
+
+    @Override
+    public void chapterChanged(Chapter c) {
+
     }
 
     @Override

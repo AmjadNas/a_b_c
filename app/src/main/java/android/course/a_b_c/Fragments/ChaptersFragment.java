@@ -133,12 +133,14 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
             if (requestCode == Constants.ADDCHAPTER) {
                 chapters.add(DataHandler.getInstance().getChapter(sTitle, title));
                 adapter.notifyItemInserted(chapters.size() - 1);
+                mListener.chapterAdded(sTitle);
             } else if (requestCode == Constants.EDIT_CHAPTER) {
                 int i = chapters.indexOf(new Chapter(sTitle, title));
                 chapters.remove(i);
                 Chapter c = DataHandler.getInstance().getChapter(sTitle, title);
                 chapters.add(i, c);
                 adapter.notifyItemChanged(i);
+                mListener.chapterAdded(sTitle);
             }
         }
     }
@@ -217,5 +219,7 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
      */
     public interface OnFragmentInteractionListener {
         void onItemDeleted(Chapter c);
+        void chapterAdded(String c);
+        void chapterChanged(Chapter c);
     }
 }
