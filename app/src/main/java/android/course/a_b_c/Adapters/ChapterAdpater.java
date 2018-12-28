@@ -55,8 +55,6 @@ public class ChapterAdpater extends RecyclerView.Adapter<ChapterAdpater.ChapterH
         viewHolder.title.setText(c.getTitle());
         viewHolder.length.setText(String.valueOf(c.getWordCount()));
         viewHolder.overflow.setOnClickListener(inflateMenuClickListener(i));
-
-
     }
 
     @Override

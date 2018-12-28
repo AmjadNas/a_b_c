@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
            // navigation.setSelectedItemId(R.id.navigation_home);
             navigation.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
 
-            intent = new Intent(this, NotifyierService.class);
-            startService(intent);
+            //intent = new Intent(this, NotifyierService.class);
+          //  startService(intent);
         }else {
             launchActivity(WelcomeActivity.class, null);
             finish();
@@ -94,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 launchActivity(SearchActivity.class, null);
                 return true;
             case R.id.logOut:
+               // intent = new Intent(this, NotifyierService.class);
+                //stopService(intent);
                 DataHandler.getInstance().logOut();
                 DataHandler.getInstance().closeDataBase();
                 launchActivity(WelcomeActivity.class, null);

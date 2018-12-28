@@ -135,7 +135,8 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
                 adapter.notifyItemInserted(chapters.size() - 1);
             } else if (requestCode == Constants.EDIT_CHAPTER) {
                 int i = chapters.indexOf(new Chapter(sTitle, title));
-                Chapter c = chapters.remove(i);
+                chapters.remove(i);
+                Chapter c = DataHandler.getInstance().getChapter(sTitle, title);
                 chapters.add(i, c);
                 adapter.notifyItemChanged(i);
             }

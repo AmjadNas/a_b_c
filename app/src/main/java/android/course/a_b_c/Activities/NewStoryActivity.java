@@ -75,11 +75,23 @@ public class NewStoryActivity extends AppCompatActivity implements LoadImageAsyn
             genres.setText(story.getGenreString());
             categories.setText(story.getCategoryString());
             tViewTags.setText(story.getTagsString());
-            tags = (String[])story.getTags().toArray();
+            tags = new String[story.getTags().size()];
+            int i = 0;
+            for (String s : story.getTags()) {
+                tags[i] = s;
+                i++;
+            }
             tvCharacters.setText(story.getCharactersString());
-            chars = (String[]) story.getCharacters().toArray();
-            cover.setImageBitmap(DataHandler.getInstance().getStoryCover(story.getTitle()));
+            chars = new String[story.getCharacters().size()];
+            i = 0;
+            for (String s : story.getCharacters()) {
+                chars[i] = s;
+                i++;
+            }
+            image = DataHandler.getInstance().getStoryCover(story.getTitle());
+            cover.setImageBitmap(image);
             isfinished = story.isStatus();
+
         }
 
     }
@@ -141,7 +153,7 @@ public class NewStoryActivity extends AppCompatActivity implements LoadImageAsyn
                 Toast.makeText(this, getString(R.string.itemupdated), Toast.LENGTH_SHORT).show();
                 Intent i = new Intent();
                 i.putExtra(Constants.STORY_TITLE, txtTitles);
-                setResult(RESULT_OK);
+                setResult(RESULT_OK, i);
                 finish();
             }else {
                 Toast.makeText(this, getString(R.string.itemnotupdated), Toast.LENGTH_SHORT).show();

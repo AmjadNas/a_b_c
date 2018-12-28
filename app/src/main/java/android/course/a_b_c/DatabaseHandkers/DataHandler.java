@@ -168,6 +168,7 @@ public class DataHandler implements NetworkResListener {
 
     private void insertItems(String table, String title, String col, HashSet<String> items){
         ContentValues cv;
+        db.delete(table, Constants.STORY_TITLE +"=?", title);
         for (String s : items){
             cv = new ContentValues();
             cv.put(Constants.STORY_TITLE, title);
@@ -368,6 +369,7 @@ public class DataHandler implements NetworkResListener {
     }
 
     private void updateStriesStuff(String txtTitles, HashSet<String> tags, HashSet<String> genres, HashSet<String> cate, HashSet<String> chars){
+
         insertItems(Constants.TAGS, txtTitles, Constants.TAG, tags);
         insertItems(Constants.GENRES, txtTitles, Constants.GENRE, genres);
         insertItems(Constants.CATEGORIES, txtTitles, Constants.CATEGORY, cate);
