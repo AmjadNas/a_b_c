@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.course.a_b_c.Adapters.ChapterAdpater;
 import android.course.a_b_c.Adapters.GridSpacingItemDecoration;
 import android.course.a_b_c.DatabaseHandkers.DataHandler;
+import android.course.a_b_c.Objects.Chapter;
 import android.course.a_b_c.Objects.Story;
 import android.course.a_b_c.R;
 import android.course.a_b_c.Utils.Constants;
@@ -28,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewStoryActivity extends AppCompatActivity {
 
@@ -37,6 +40,7 @@ public class ViewStoryActivity extends AppCompatActivity {
     private ImageView cover;
     private Story story;
     private TextView tags, categories, genres;
+    private List<Chapter> cList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +80,16 @@ public class ViewStoryActivity extends AppCompatActivity {
                 shareItem();
                 return true;
             case R.id.action_fave:
-                if (DataHandler.getInstance().userLikes(story.getTitle()))
-                    DataHandler.getInstance().unLikeStory(story.getTitle(), true);
-                else
-                    DataHandler.getInstance().LikeStory(story.getTitle(), true);
+                if (DataHandler.getInstance().userLikes(story.getTitle())) {
+                    if (DataHandler.getInstance().unLikeStory(story.getTitle(), true))
+                        story.decreaseLikes();
+                }
+                else {
+                    if (DataHandler.getInstance().LikeStory(story.getTitle(), true))
+                        story.increaseLikes();
+                }
+                likes.setText(String.valueOf(story.getLikes()));
+
                 return true;
             case R.id.actiod_addto_current:
                 DataHandler.getInstance().addToCurrentReading(story.getTitle(), true);
@@ -151,7 +161,9 @@ public class ViewStoryActivity extends AppCompatActivity {
         completed.setText(story.getCompletedStatues());
         language.setText(story.getLanguage());
         likes.setText(String.valueOf(story.getLikes()));
-        length.setText(String.valueOf(story.getLength()));
+        length.setText(String.valueOf(story.getWrodCount()));
+        int cmts = DataHandler.getInstance().getCommentsCountForStory(story.getTitle());
+        comments.setText(String.valueOf(cmts));
         rated.setText(story.getRated());
         Bitmap img = DataHandler.getInstance().getStoryCover(story.getTitle());
         cover.setImageBitmap(img);
@@ -162,7 +174,8 @@ public class ViewStoryActivity extends AppCompatActivity {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.menuList);
-        ChapterAdpater adapter = new ChapterAdpater(this, story.getChapters(), null, false);
+        cList = DataHandler.getInstance().getChaptersBytStoryTitle(story.getTitle());
+        ChapterAdpater adapter = new ChapterAdpater(this, cList, null, false);
         adapter.setIsView(true);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(8), true));

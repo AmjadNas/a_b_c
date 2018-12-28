@@ -153,7 +153,7 @@ public class MyDatabase extends SQLiteOpenHelper {
             User user = null;
             int i;
 
-            str = Constants.USERNAME + " = ? ";
+            str = Constants.USERNAME + " =? ";
             Cursor c = db.query(Constants.USER, args, str, wArgs, null, null, null, null);
             // fill args if found
             if (c.moveToNext()) {
@@ -184,21 +184,20 @@ public class MyDatabase extends SQLiteOpenHelper {
             String[] args = {
                     Constants.TITLE,
                     Constants.AUTHOR,
-                    Constants.LANGUAGE,
                     Constants.SYNOPSIS,
+                    Constants.LANGUAGE,
                     Constants.RATING,
-                    Constants.STATUS,
                     Constants.LIKES,
+                    Constants.STATUS,
                     Constants.DATE
             };
             Cursor c = db.query(Constants.STORY, args, null, null, null, null, null);
 
             while (c.moveToNext()){
                 s = new Story(c.getString(0), c.getString(1),
-                        c.getString(3), c.getString(2),c.getString(4), c.getInt(6), false);
-                s.setStatus(c.getInt(5));
+                        c.getString(2), c.getString(3),c.getString(4), c.getInt(5), false);
+                s.setStatus(c.getInt(6));
                 s.setDate(c.getString(7));
-                s.setChapters(getChaptersForStory(s.getTitle()));
 
                 List<String> tags = getStringsStuff(Constants.TAGS,
                         Constants.STORY_TITLE + "=?", Constants.TAG, null, s.getTitle());
@@ -213,8 +212,8 @@ public class MyDatabase extends SQLiteOpenHelper {
                         Constants.STORY_TITLE + "=?", Constants.GENRE, null, s.getTitle());
                 s.setGenres(new HashSet<>(tags));
 
-                s.setChapters(getChaptersForStory(s.getTitle()));
-
+                s.setChapterCount(getChapterCount(s.getTitle()));
+                s.setWordCount(getStoryWordCount(s.getTitle()));
                 stories.add(s);
             }
 
@@ -223,6 +222,71 @@ public class MyDatabase extends SQLiteOpenHelper {
             t.printStackTrace();
         }
         return stories;
+    }
+
+    public int getChapterCount(String ...title){
+        int i = 0;
+        try {
+            String[] args = {
+                    Constants.TITLE,
+            };
+            Cursor c = db.query(Constants.CHAPTER, args, Constants.STORY_TITLE + "=? " , title, null, null, null);
+
+            while (c.moveToNext()){
+                i++;
+            }
+
+            c.close();
+
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+        return i;
+    }
+
+    public int getStoryWordCount(String ...title){
+        int i = 0;
+        try {
+            String[] args = {
+                    Constants.LINES,
+            };
+            Cursor c = db.query(Constants.CHAPTER, args, Constants.STORY_TITLE + "=? " , title, null, null, null);
+
+            while (c.moveToNext()){
+                for (String s : c.getString(0).split(" "))
+                    i++;
+            }
+
+            c.close();
+
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+        return i;
+    }
+
+    public int getTotalCommentCountForStory(String ...title){
+        int i = 0;
+        try {
+            Chapter sc = null;
+            String[] args = {
+                    Constants.STORY_TITLE
+            };
+            Cursor c = db.query(Constants.COMMENTS, args, Constants.STORY_TITLE + "=? " , title, null, null, null);
+
+            while (c.moveToNext()){
+                i++;
+            }
+
+            c.close();
+
+        } catch (Throwable t) {
+            t.printStackTrace();
+
+        }
+        return i;
     }
 
     public Chapter getChapterInStory(String ...title){
@@ -235,12 +299,14 @@ public class MyDatabase extends SQLiteOpenHelper {
             };
             Cursor c = db.query(Constants.CHAPTER, args, Constants.STORY_TITLE + "=? AND "+
                     Constants.TITLE + "=?" , title, null, null, null);
-
+            String sTitle, titlle;
             if (c.moveToNext()){
                 String str = c.getString(2);
+                sTitle = c.getString(0);
+                titlle = c.getString(1);
                 sc = new Chapter(c.getString(0), c.getString(1));
                 sc.setLines(Arrays.asList(str.split("\n")));
-                List<Comment> comments = getCommentsForChapter(title);
+                List<Comment> comments = getCommentsForChapter(sTitle, titlle);
                 sc.setComments(comments);
             }
 
@@ -263,7 +329,7 @@ public class MyDatabase extends SQLiteOpenHelper {
                     Constants.COMMENT,
                     Constants.DATE
             };
-            Cursor c = db.query(Constants.CHAPTER, args, Constants.STORY_TITLE + "=? AND "+
+            Cursor c = db.query(Constants.COMMENTS, args, Constants.STORY_TITLE + "=? AND "+
                     Constants.TITLE + "=?", title, null, null, null);
 
             while (c.moveToNext()){
@@ -290,12 +356,18 @@ public class MyDatabase extends SQLiteOpenHelper {
                     Constants.TITLE,
                     Constants.LINES,
             };
+            String sTitle;
+            String titlle;
             Cursor c = db.query(Constants.CHAPTER, args, Constants.STORY_TITLE + "=?", title, null, null, null);
 
             while (c.moveToNext()){
                 String str = c.getString(2);
+                sTitle = c.getString(0);
+                titlle = c.getString(1);
                 sc = new Chapter(c.getString(0), c.getString(1));
                 sc.setLines(Arrays.asList(str.split("\n")));
+                List<Comment> comments = getCommentsForChapter(sTitle, titlle);
+                sc.setComments(comments);
                 chapters.add(sc);
             }
 
@@ -419,11 +491,11 @@ public class MyDatabase extends SQLiteOpenHelper {
             String[] args = {
                     Constants.TITLE,
                     Constants.AUTHOR,
-                    Constants.LANGUAGE,
                     Constants.SYNOPSIS,
+                    Constants.LANGUAGE,
                     Constants.RATING,
-                    Constants.STATUS,
                     Constants.LIKES,
+                    Constants.STATUS,
                     Constants.DATE
             };
 
@@ -432,6 +504,10 @@ public class MyDatabase extends SQLiteOpenHelper {
             if (c.moveToNext()) {
                 sc = new Story(c.getString(0), c.getString(1),
                         c.getString(2), c.getString(3), c.getString(4));
+
+                sc.setLikes(c.getInt(5));
+                sc.setStatus(c.getInt(6));
+                sc.setDate(c.getString(7));
 
                 List<String> tags = getStringsStuff(Constants.TAGS,
                         Constants.STORY_TITLE + "=?", Constants.TAG, null, sc.getTitle());
@@ -446,7 +522,8 @@ public class MyDatabase extends SQLiteOpenHelper {
                         Constants.STORY_TITLE + "=?", Constants.GENRE, null, sc.getTitle());
                 sc.setGenres(new HashSet<>(tags));
 
-                sc.setChapters(getChaptersForStory(sc.getTitle()));
+                sc.setChapterCount(getChapterCount(sc.getTitle()));
+                sc.setWordCount(getStoryWordCount(sc.getTitle()));
             }
 
             c.close();
@@ -533,7 +610,8 @@ public class MyDatabase extends SQLiteOpenHelper {
             Story story = getStoryByID(storyTitle);
             story.setLikes(story.getLikes()+1);
             ContentValues cv = new ContentValues();
-            cv.put(Constants.LIKES, story.getLikes());
+            int i =  story.getLikes();
+            cv.put(Constants.LIKES, ++i);
             update(Constants.STORY, cv, Constants.TITLE + "=?", storyTitle);
         }catch (Throwable t){
             t.printStackTrace();
@@ -545,7 +623,8 @@ public class MyDatabase extends SQLiteOpenHelper {
             Story story = getStoryByID(storyTitle);
             story.setLikes(story.getLikes()-1);
             ContentValues cv = new ContentValues();
-            cv.put(Constants.LIKES, story.getLikes());
+            int i =  story.getLikes();
+            cv.put(Constants.LIKES, --i);
             update(Constants.STORY, cv, Constants.TITLE + "=?", storyTitle);
         }catch (Throwable t){
             t.printStackTrace();

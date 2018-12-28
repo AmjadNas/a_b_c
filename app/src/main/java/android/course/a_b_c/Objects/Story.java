@@ -24,7 +24,6 @@ public class Story implements Comparable<Story> {
     private HashSet<String> categories;
     private HashSet<String> characters;;
     private HashSet<String> genres;
-    private List<Chapter> chapters;
     private HashSet<String> tags;
     private int likes;
     private int wordCount;
@@ -42,7 +41,6 @@ public class Story implements Comparable<Story> {
         this.language = language;
         this.rated = rated;
         categories = new HashSet<>();
-        chapters = new ArrayList<>();
         characters = new HashSet<>(1);
         tags = new HashSet<>();
         likes = 0;
@@ -57,7 +55,6 @@ public class Story implements Comparable<Story> {
         this.language = language;
         this.rated = rated;
         categories = new HashSet<>();
-        chapters = new ArrayList<>();
         tags = new HashSet<>();
         characters = new HashSet<>(1);
         this.likes = likes;
@@ -120,11 +117,11 @@ public class Story implements Comparable<Story> {
     }
 
     public void setWordCount(int anInt) {
-        wordCount = 0;
+        wordCount = anInt;
     }
 
-    public List<Chapter> getChapters() {
-        return chapters;
+    public int getChapterCount() {
+        return chapterCount;
     }
 
     public HashSet<String> getCharacters() {
@@ -197,12 +194,6 @@ public class Story implements Comparable<Story> {
         return Converter.fromListToString(categories);
     }
 
-    public boolean AddChapter(Chapter c){
-        if (!chapters.contains(c))
-            return chapters.add(c);
-        return false;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -241,28 +232,6 @@ public class Story implements Comparable<Story> {
         else if (status == 0)
             this.status = false;
 
-    }
-    public int getCount() {
-        return chapters.size();
-    }
-    public int getChapterCount() {
-        return chapters.size();
-    }
-
-    public int getLength() {
-        int i = 0;
-        for (Chapter c :chapters)
-            i += c.getWordCount();
-        return i;
-    }
-
-    public int getCommentsCount(){
-        int i = 0;
-        if (chapters != null){
-            for (Chapter c : chapters)
-                i += c.getCommentcount();
-        }
-        return i;
     }
 
     public void increaseLikes(){
@@ -308,18 +277,6 @@ public class Story implements Comparable<Story> {
         dateFormat = DateUtil.getCurrentDate(string);
     }
 
-    public void setChapters(List<Chapter> chaptersForStory) {
-        chapters = chaptersForStory;
-    }
-
-    public boolean removeChapter(String cTitle) {
-        if (cTitle != null) {
-            Chapter c = new Chapter(title, cTitle);
-            return chapters.remove(c);
-        }
-        return false;
-    }
-
     public long getDateFormat() {
         return dateFormat;
     }
@@ -337,15 +294,6 @@ public class Story implements Comparable<Story> {
     }
 
 
-    public Chapter getChaptersByTitle(String title) {
-        for (Chapter c : chapters)
-            if (title.equals(c.getTitle()))
-                return c;
-
-        return null;
-
-    }
-
     public void setRated(String txtRate) {
         rated = txtRate;
     }
@@ -359,16 +307,6 @@ public class Story implements Comparable<Story> {
         setTags(story.tags);
         setCharacters(story.characters);
         setStatus(story.status);
-    }
-
-    public boolean updateChapter(Chapter c) {
-        for (Chapter k : chapters)
-            if (c.equals(k)){
-                k.setLines(c.getLines());
-                return true;
-            }
-
-        return false;
     }
 
     @Override

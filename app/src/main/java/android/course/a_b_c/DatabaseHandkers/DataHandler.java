@@ -122,26 +122,25 @@ public class DataHandler implements NetworkResListener {
     public boolean addStory(String txtTitles, String txtSynopsis, String txtGenre, String txtcateGories,
                             String language, String rating, Bitmap image, String[] tags, String[] tvCharacters,
                             boolean isfinished){
-            Story story = new Story(txtTitles, user.getUsername(),  txtSynopsis, language, rating,  0, isfinished);
-            String[] cate = txtcateGories.split(", ");
-            String[] genres = txtGenre.split(", ");
+        Story story = new Story(txtTitles, user.getUsername(),  txtSynopsis, language, rating,  0, isfinished);
+        String[] cate = txtcateGories.split(", ");
+        String[] genres = txtGenre.split(", ");
 
-            // converting tags, genres and categories to ArrayLists
+        // converting tags, genres and categories to ArrayLists
 
-            story.setCategories(new HashSet<>(Arrays.asList(cate)));
-            story.setGenres(new HashSet<>(Arrays.asList(genres)));
-            story.setTags(new HashSet<>(Arrays.asList(tags)));
-            story.setCharacters(new HashSet<>(Arrays.asList(tvCharacters)));
+        story.setCategories(new HashSet<>(Arrays.asList(cate)));
+        story.setGenres(new HashSet<>(Arrays.asList(genres)));
+        story.setTags(new HashSet<>(Arrays.asList(tags)));
+        story.setCharacters(new HashSet<>(Arrays.asList(tvCharacters)));
 
             // if story inserted successfully insert it's relevant items
-            if(db.insert(Constants.STORY, story.getContentValues())) {
-                if (image != null)
-                    insertImage(txtTitles, image);
-
-                updateStriesStuff(txtTitles, story.getTags(), story.getGenres(), story.getCategories(), story.getCharacters());
-                NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.INSERT_ITEM_REQ, story, this);
-                return true;
-            }
+        if(db.insert(Constants.STORY, story.getContentValues())) {
+            if (image != null)
+                insertImage(txtTitles, image);
+            updateStriesStuff(txtTitles, story.getTags(), story.getGenres(), story.getCategories(), story.getCharacters());
+            NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.INSERT_ITEM_REQ, story, this);
+            return true;
+        }
         return false;
     }
 
@@ -216,7 +215,6 @@ public class DataHandler implements NetworkResListener {
     }
 
     public ArrayList<Story> getStoriesBy(String table, String where, String value, String col){
-
         ArrayList<Story> list = new ArrayList<>();
         for (Story s : db.getAllStories()){
             if (table.equals(Constants.CATEGORIES)) {
@@ -230,16 +228,7 @@ public class DataHandler implements NetworkResListener {
         return list;
     }
 
-    public boolean removeChapterFromStory(String sTitle, String title){
-        Story s = getStoryByTitle(sTitle);
-        if (s != null && db.delete(Constants.CHAPTER, Constants.STORY_TITLE + "=? AND " + Constants.TITLE + "=?", sTitle, title)){
-            return s.removeChapter(title);
-        }
-        return false;
-    }
-
     public boolean sendMessage(String reciever, String subject, String message){
-
         Message msg = new Message(user.getUsername(), reciever, subject, message);
         if (db.insert(Constants.MESSAGES, msg.getContentValue())){
             NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.INSERT_MESSAGE_REQ, msg, this);
@@ -303,7 +292,7 @@ public class DataHandler implements NetworkResListener {
 
         if (s != null && db.insert(Constants.CHAPTER, c.getContentValues())){
             NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.INSERT_CHAPTER_REQ, c, txtContent, this);
-            return s.AddChapter(c);
+            return true;
         }
 
         return false;
@@ -323,7 +312,7 @@ public class DataHandler implements NetworkResListener {
         if (s != null && db.update(Constants.CHAPTER, c.getContentValuesForUpdate(),
                 Constants.STORY_TITLE + "=? AND " + Constants.TITLE + "=?", str, txtTitle)){
             NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.INSERT_CHAPTER_REQ, c, txtContent, this);
-            return s.updateChapter(c);
+            return true;
         }
 
         return false;
@@ -336,7 +325,7 @@ public class DataHandler implements NetworkResListener {
          db.delete(Constants.COMMENTS, Constants.STORY_TITLE + "=? AND " + Constants.TITLE + "=?", str, txtTitle);
         if (db.delete(Constants.CHAPTER, Constants.STORY_TITLE + "=? AND " + Constants.TITLE + "=?", str, txtTitle)){
             NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.DELETE_CHAPTER_REQ, new Chapter(str, txtTitle), null, this);
-            return s.removeChapter(txtTitle);
+            return true;
         }
 
         return false;
@@ -457,7 +446,7 @@ public class DataHandler implements NetworkResListener {
 
     public List<Chapter> getChaptersBytStoryTitle(String sTitle) {
         if (sTitle != null){
-            return db.getStoryByID(sTitle).getChapters();
+            return db.getChaptersForStory(sTitle);
         }
         return null;
     }
@@ -781,6 +770,10 @@ public class DataHandler implements NetworkResListener {
 
     }
 
+    public int getCommentsCountForStory(String title) {
+        return db.getTotalCommentCountForStory(title);
+    }
+
     public List<String> getUserFollowers(String username) {
         return db.getStringsStuff(Constants.FOLLOWERS, Constants.USERNAME + "=?", Constants.FOLLOWER, null, username);
 
@@ -824,6 +817,7 @@ public class DataHandler implements NetworkResListener {
     @Override
     public void onPostUpdate(Bitmap res, ResStatus status) {
     }
+
 
 
 }

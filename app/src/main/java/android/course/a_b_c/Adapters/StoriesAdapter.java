@@ -67,7 +67,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ParentVi
         Story story = list.get(i);
         myHolder.st_title.setText(story.getTitle());
         myHolder.pageNum.setText(String.valueOf(story.getWrodCount()));
-        myHolder.chapterNum.setText(String.valueOf(story.getCount()));
+        myHolder.chapterNum.setText(String.valueOf(story.getChapterCount()));
         myHolder.status.setText(story.getStatusString());
         //myHolder.thumbnail.setImageBitmap(DataHandler.getInstance().getStoryCover(story.getTitle()));
         if (viewType == MY_STORY_VIEW_TYPE) {
