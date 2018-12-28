@@ -96,7 +96,7 @@ public class ChapterAdpater extends RecyclerView.Adapter<ChapterAdpater.ChapterH
             intent.putExtra(Constants.RESOURCE, Constants.STORY_LINES);
             intent.putExtra(Constants.STORY_TITLE, list.get(getAdapterPosition()).getStoryTitle());
             intent.putExtra(Constants.TITLE, list.get(getAdapterPosition()).getTitle());
-            context.startActivity(intent);
+            ((Activity)context).startActivityForResult(intent, Constants.COMMENT_CHAPTER);
         }
     }
 

@@ -80,6 +80,7 @@ public class AddCommentActivity extends AppCompatActivity implements NetworkResL
                 if (DataHandler.getInstance().insertComment(stTtitle, title, txtComment)) {
                     comments.add(0, new Comment(title, stTtitle, DataHandler.getInstance().getUser().getUsername(), comment.getText().toString()));
                     adapter.notifyItemInserted(0);
+                    setResult(RESULT_OK);
                 }
 
             } else if (viewType.equals(Constants.REPLIES)) {

@@ -12,6 +12,7 @@ import android.course.a_b_c.Utils.Constants;
 import android.course.a_b_c.Utils.Converter;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -41,6 +42,7 @@ public class ViewStoryActivity extends AppCompatActivity {
     private Story story;
     private TextView tags, categories, genres;
     private List<Chapter> cList;
+    private ChapterAdpater adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +177,7 @@ public class ViewStoryActivity extends AppCompatActivity {
     private void initRecyclerView(){
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.menuList);
         cList = DataHandler.getInstance().getChaptersBytStoryTitle(story.getTitle());
-        ChapterAdpater adapter = new ChapterAdpater(this, cList, null, false);
+        adapter = new ChapterAdpater(this, cList, null, false);
         adapter.setIsView(true);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(8), true));
@@ -221,5 +223,22 @@ public class ViewStoryActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == Constants.COMMENT_CHAPTER){
+            String sTitle = data.getStringExtra(Constants.STORY_TITLE);
+            String title = data.getStringExtra(Constants.TITLE);
+            int index = cList.indexOf(new Chapter(sTitle,title));
+            int cmts = DataHandler.getInstance().getCommentsCountForStory(story.getTitle());
+            Chapter c = DataHandler.getInstance().getChapter(sTitle, title);
+
+            cList.remove(index);
+            cList.add(index, c);
+            comments.setText(String.valueOf(cmts));
+            adapter.notifyItemChanged(index);
+        }
     }
 }

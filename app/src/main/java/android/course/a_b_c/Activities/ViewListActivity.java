@@ -7,6 +7,7 @@ import android.course.a_b_c.Objects.Chapter;
 import android.course.a_b_c.R;
 import android.course.a_b_c.Utils.Constants;
 import android.course.a_b_c.Utils.Converter;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -99,6 +100,19 @@ public class ViewListActivity extends AppCompatActivity  {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            if (requestCode == Constants.COMMENT_CHAPTER) {
+                Intent intent = new Intent();
+                intent.putExtra(Constants.STORY_TITLE, c.getStoryTitle());
+                intent.putExtra(Constants.TITLE, c.getTitle());
+                setResult(RESULT_OK, intent);
+            }
+        }
+    }
+
     private void shareChapter() {
     }
 
@@ -108,7 +122,7 @@ public class ViewListActivity extends AppCompatActivity  {
             intent.putExtra(Constants.VIEW_TYPE, Constants.COMMENTS);
             intent.putExtra(Constants.STORY_TITLE, c.getStoryTitle());
             intent.putExtra(Constants.TITLE, c.getTitle());
-            startActivity(intent);
+            startActivityForResult(intent, Constants.COMMENT_CHAPTER);
         }
     }
 }

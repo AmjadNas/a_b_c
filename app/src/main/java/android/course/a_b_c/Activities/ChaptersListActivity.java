@@ -40,13 +40,16 @@ public class ChaptersListActivity extends AppCompatActivity implements ChaptersF
     public void onItemDeleted(Chapter c) {
 
         adapter.getDeleteFragment().addChapterToList(c);
+        Intent intent = new Intent();
+        intent.putExtra(Constants.STORY_TITLE, c.getStoryTitle());
+        setResult(RESULT_OK, intent);
     }
 
     @Override
     public void chapterAdded(String c) {
         Intent intent = new Intent();
         intent.putExtra(Constants.STORY_TITLE, c);
-        setResult(RESULT_OK);
+        setResult(RESULT_OK, intent);
 
     }
 

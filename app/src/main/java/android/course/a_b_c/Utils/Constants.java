@@ -69,6 +69,7 @@ public final class Constants {
     public static final int ADDCHAPTER = 202;
     public static final int EDIT_CHAPTER = 55;
     public static final int SEND_MESAGE = 44;
+    public static final int COMMENT_CHAPTER = 33;
 
 
     private  Constants(){}

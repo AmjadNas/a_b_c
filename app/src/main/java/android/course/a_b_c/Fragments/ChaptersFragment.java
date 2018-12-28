@@ -141,6 +141,12 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
                 chapters.add(i, c);
                 adapter.notifyItemChanged(i);
                 mListener.chapterAdded(sTitle);
+            }else if (requestCode == Constants.COMMENT_CHAPTER){
+                int i = chapters.indexOf(new Chapter(sTitle, title));
+                chapters.remove(i);
+                Chapter c = DataHandler.getInstance().getChapter(sTitle, title);
+                chapters.add(i, c);
+                adapter.notifyItemChanged(i);
             }
         }
     }
