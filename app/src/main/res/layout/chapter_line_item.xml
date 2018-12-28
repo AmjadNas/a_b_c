@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/slightYellow">
+
+    <TextView
+        android:id="@+id/itemText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:fontFamily="sans-serif"
+        android:text="TextView"
+        android:textAlignment="viewStart"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+</LinearLayout>

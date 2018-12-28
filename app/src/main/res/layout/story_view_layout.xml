@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/txt_title_vs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif"
+        android:text="Title"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/wt_by_vs_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/txt_title_vs"
+        android:layout_below="@id/txt_title_vs"
+        android:layout_marginTop="10dp"
+        android:text="Written by:" />
+
+    <TextView
+        android:id="@+id/wt_by_vs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/wt_by_vs_lbl"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/wt_by_vs_lbl"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/synop_vs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wt_by_vs_lbl"
+        android:layout_alignStart="@id/txt_title_vs"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:nestedScrollingEnabled="true"
+        android:text="TEXT" />
+
+    <TextView
+        android:id="@+id/pub_vs_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/synop_vs"
+        android:layout_alignStart="@id/txt_title_vs"
+        android:layout_marginTop="10dp"
+        android:text="Published On:" />
+
+    <TextView
+        android:id="@+id/pub_vs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/pub_vs_lbl"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/pub_vs_lbl"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/rate_vs_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pub_vs_lbl"
+        android:layout_alignStart="@id/txt_title_vs"
+        android:layout_marginTop="10dp"
+        android:text="Rated:" />
+
+    <TextView
+        android:id="@+id/rate_vs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/rate_vs_lbl"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/rate_vs_lbl"
+        android:fontFamily="sans-serif-condensed"
+        android:text="TextView"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lang_vs_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/txt_title_vs"
+        android:layout_below="@id/rate_vs_lbl"
+        android:layout_marginTop="2dp"
+        android:text="Language" />
+
+    <TextView
+        android:id="@+id/lks_vs_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lang_vs_lbl"
+        android:layout_alignStart="@id/txt_title_vs"
+        android:layout_marginTop="2dp"
+        android:text="Favourites" />
+
+    <TextView
+        android:id="@+id/cmts_vs_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lks_vs_lbl"
+        android:layout_alignStart="@id/txt_title_vs"
+        android:layout_marginTop="2dp"
+        android:text="Comments" />
+
+    <TextView
+        android:id="@+id/Len_vs_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cmts_vs_lbl"
+        android:layout_alignStart="@id/txt_title_vs"
+        android:layout_marginTop="2dp"
+        android:text="Length" />
+
+    <TextView
+        android:id="@+id/copm_vs_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Len_vs_lbl"
+        android:layout_alignStart="@id/txt_title_vs"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="5dp"
+        android:text="Completed" />
+
+    <TextView
+        android:id="@+id/lang_vs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/lang_vs_lbl"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/lang_vs_lbl"
+        android:text="TextView"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lks_vs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/lks_vs_lbl"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@id/lks_vs_lbl"
+        android:text="TextView"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/cmt_vs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/cmts_vs_lbl"
+        android:layout_toEndOf="@id/cmts_vs_lbl"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="TextView"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/len_vs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/Len_vs_lbl"
+        android:layout_marginStart="23dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@+id/Len_vs_lbl"
+        android:text="TextView"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/comp_vs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/copm_vs_lbl"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@+id/copm_vs_lbl"
+        android:text="TextView"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold" />
+</RelativeLayout>

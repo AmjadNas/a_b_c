@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_share_black_24dp"
+        android:title="@string/share"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_fave"
+        android:icon="@drawable/ic_favorite_black_24dp"
+        android:title="@string/addedTovaourites"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actiod_addto_current"
+        android:icon="@drawable/ic_stories_black_24dp"
+        android:title="Add to Current Reading"
+        app:showAsAction="always" />
+</menu>

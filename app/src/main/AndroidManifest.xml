@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="android.course.a_b_c">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Activities.MainActivity"
+            android:label="@string/title_activity_main"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.NewStoryActivity" />
+        <activity android:name=".Activities.AddCommentActivity" />
+        <activity
+            android:name=".Activities.ProfileActivity"
+            android:theme="@style/TranparentOverLay" />
+        <activity android:name=".Activities.ViewListActivity" />
+        <activity android:name=".Activities.NewChapterActivity" />
+        <activity android:name=".Activities.EditProfileActivity" />
+        <activity android:name=".Activities.WelcomeActivity"/>
+
+        <activity
+            android:name=".Activities.ChaptersListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.ViewStoryActivity"
+            android:theme="@style/TranparentOverLay" />
+        <activity android:name=".Activities.NewMessageActivity" />
+        <activity android:name=".Activities.NewEventActivity" />
+        <activity android:name=".Activities.SearchActivity" />
+        <activity
+            android:name=".Activities.StoriesByActivities"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.FollowActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="android.course.a_b_c.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+
+        </provider>
+
+        <service
+            android:name="android.course.a_b_c.Services.NotifyierService"
+            android:enabled="true"
+            android:process=":remote" />
+
+        <receiver
+            android:name="android.course.a_b_c.Services.BootStartUpReciever"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
