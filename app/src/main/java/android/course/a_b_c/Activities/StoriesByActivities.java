@@ -25,6 +25,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -50,12 +51,25 @@ public class StoriesByActivities extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         progressBar = toolbar.findViewById(R.id.progressBar2);
         progressBar.setVisibility(ProgressBar.GONE);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         type = getIntent().getStringExtra(Constants.VIEW_TYPE);
 
         label  = getIntent().getStringExtra(Constants.RESOURCE);
         getSupportActionBar().setTitle(label);
 
         initRecyclerView();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initRecyclerView() {

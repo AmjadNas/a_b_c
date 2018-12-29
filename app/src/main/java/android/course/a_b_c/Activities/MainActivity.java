@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private Intent intent;
     private int precID;
     private Toolbar toolbar;
+    private BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         dataHandler = DataHandler.getInstance();
         dataHandler.initDataBase(this);
         NetworkConnector.getInstance().initialize(getApplicationContext());
+
         intent = getIntent();
         if (dataHandler.initUser() == null) {
             String username = intent.getStringExtra(Constants.USERNAME);
@@ -53,13 +56,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         if (dataHandler.getUser() != null) {
             //frame = (FrameLayout) findViewById(R.id.frag_container);
-            BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+             navigation = (BottomNavigationView) findViewById(R.id.navigation);
             navigation.setOnNavigationItemSelectedListener(this);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frag_container, TabbedFragment.newInstance(R.id.navigation_home))
                     .commit();
            // navigation.setSelectedItemId(R.id.navigation_home);
-            navigation.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
+            precID = R.id.navigation_home;
 
             intent = new Intent(this, NotifyierService.class);
             startService(intent);
@@ -109,12 +112,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onNavigationItemSelected (@NonNull MenuItem item){
+        item.setCheckable(true);
         if (precID != item.getItemId()) {
-            getSupportActionBar().setTitle(item.getTitle());
             replaceFragment(TabbedFragment.newInstance(item.getItemId()));
             precID = item.getItemId();
             return true;
-        }
+       }
         return false;
 
     }

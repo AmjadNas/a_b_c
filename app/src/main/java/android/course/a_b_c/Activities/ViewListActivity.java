@@ -28,6 +28,9 @@ public class ViewListActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_layout);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         Intent intent = getIntent();
         String[] arr = null;
 
@@ -97,6 +100,9 @@ public class ViewListActivity extends AppCompatActivity  {
                 launchActivity();
                 return true;
             case R.id.item_share_mn:
+                return true;
+            case android.R.id.home:
+                    finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

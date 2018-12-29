@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 public class ChaptersListActivity extends AppCompatActivity implements ChaptersFragment.OnFragmentInteractionListener {
@@ -29,12 +30,24 @@ public class ChaptersListActivity extends AppCompatActivity implements ChaptersF
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         adapter = new ChapterFragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.mainFragmentTabs);
         tabLayout.setupWithViewPager(pager);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

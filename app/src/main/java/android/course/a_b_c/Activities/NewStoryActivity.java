@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -50,12 +51,24 @@ public class NewStoryActivity extends AppCompatActivity implements LoadImageAsyn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_story);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         String title = getIntent().getStringExtra(Constants.TITLE);
         if (title != null)
             story = DataHandler.getInstance().getStoryByTitle(title);
 
         initViews();
         initSpinner();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initViews() {

@@ -24,6 +24,9 @@ public class NewChapterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_chapter);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         str = getIntent().getStringExtra(Constants.STORY_TITLE);
         currentTitle = getIntent().getStringExtra(Constants.TITLE);
 
@@ -53,6 +56,9 @@ public class NewChapterActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_save:
                 saveChapter();
+                return true;
+            case android.R.id.home:
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

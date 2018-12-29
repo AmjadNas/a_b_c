@@ -173,8 +173,7 @@ public class TabbedFragment extends Fragment implements ViewPager.OnPageChangeLi
     public void OnStoryDeleted(Story s) {
         if (mParam1 == R.id.navigation_mStories)
             ((StoriesFragment)getChildFragmentManager().getFragments().get(1)).addToDeletedList(s);
-        else if (mParam1 == R.id.navigation_library)
-            ((StoriesFragment)getChildFragmentManager().getFragments().get(1)).addToDeletedList(s);
+
     }
 
     @Override

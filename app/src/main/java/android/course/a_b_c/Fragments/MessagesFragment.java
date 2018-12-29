@@ -102,7 +102,7 @@ public class MessagesFragment extends Fragment implements View.OnClickListener, 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK){
-            if (requestCode == Constants.SEND_MESAGE){
+            if (requestCode == Constants.SEND_MESAGE && tag.equals(SENT)){
                 messages = DataHandler.getInstance().getSentMessages();
                 adapter.setMessages(messages);
             }

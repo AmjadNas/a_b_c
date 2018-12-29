@@ -7,6 +7,7 @@ import android.course.a_b_c.Utils.Constants;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,6 +20,9 @@ public class NewMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_message);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         String prof = getIntent().getStringExtra(Constants.USERNAME);
 
         username = (TextInputLayout) findViewById(R.id.edt_user_message);
@@ -28,6 +32,15 @@ public class NewMessageActivity extends AppCompatActivity {
         sjubject = (TextInputLayout) findViewById(R.id.edt_subject_message);
         message = (TextInputLayout) findViewById(R.id.edt_message);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void postMessage(View view) {

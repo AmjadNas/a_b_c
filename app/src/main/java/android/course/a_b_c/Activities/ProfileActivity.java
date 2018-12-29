@@ -126,6 +126,10 @@ public class ProfileActivity extends AppCompatActivity implements NetworkResList
             startActivityForResult(prof, REQUESTEDITPROF);
             return true;
         }
+        if (item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
