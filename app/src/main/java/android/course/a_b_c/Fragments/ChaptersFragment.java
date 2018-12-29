@@ -194,7 +194,8 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
 
     @Override
     public void onPreUpdate() {
-
+        if (mListener != null)
+            mListener.chaptersLoading(true);
     }
 
     @Override
@@ -206,6 +207,8 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
             chapters = DataHandler.getInstance().getChaptersBytStoryTitle(sTitle);
             adapter.setChapters(chapters);
         }
+        if (mListener != null)
+            mListener.chaptersLoading(false);
     }
 
     @Override
@@ -226,6 +229,6 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
     public interface OnFragmentInteractionListener {
         void onItemDeleted(Chapter c);
         void chapterAdded(String c);
-        void chapterChanged(Chapter c);
+        void chaptersLoading(boolean isLoading);
     }
 }

@@ -158,6 +158,7 @@ public class NotifyierService extends Service implements IResultReceiver {
 		notificationBuilder.setGroup(type);
 		notificationBuilder.setContentIntent(mContentIntent).setSound(soundURI);
 		notificationBuilder.setVibrate(mVibratePattern);
+		notificationBuilder.setPriority(Notification.PRIORITY_HIGH); // for android 8.0+ devices
 
 		// Pass the Notification to the NotificationManager:
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

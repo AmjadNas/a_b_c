@@ -55,7 +55,7 @@
     <string name="failedToSaveMessage">Failed to save message</string>
     <string name="uploadSuccess">Upload Successful</string>
     <string name="failedImage">Failed to load image</string>
-    <string name="search_for_story">Search for story</string>
+    <string name="search_for_story">Search for a Story</string>
     <string name="addedTovaourites">Added to favourites</string>
     <string name="removedFromFavourites">Removed from favourites</string>
     <string name="addReply">Add a reply</string>
@@ -71,6 +71,13 @@
     <string name="followers">Followers: %1$d</string>
     <string name="send_to">Send to</string>
     <string name="followers_emp">Followers</string>
+    <string name="newMessage">New Message</string>
+    <string name="postActivity">Post New Activity</string>
+    <string name="discover">Discover</string>
+    <string name="logIn">Log In</string>
+    <string name="editProfile">Edit Profile</string>
+    <string name="postStory">Post a Story</string>
+    <string name="add_genres">Add Genres</string>
 
     <string-array name="ratings">
         <item>Ten</item>

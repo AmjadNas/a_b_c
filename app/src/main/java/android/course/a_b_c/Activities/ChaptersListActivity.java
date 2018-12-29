@@ -14,18 +14,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.ProgressBar;
 
 public class ChaptersListActivity extends AppCompatActivity implements ChaptersFragment.OnFragmentInteractionListener {
 
     public static final int CHAPTER_ADDED = -12;
     private ChapterFragmentAdapter adapter;
-    private boolean chapteradded;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chapters_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
@@ -54,8 +55,13 @@ public class ChaptersListActivity extends AppCompatActivity implements ChaptersF
     }
 
     @Override
-    public void chapterChanged(Chapter c) {
+    public void chaptersLoading(boolean isLoading){
+        ProgressBar progressBar = (ProgressBar)toolbar.findViewById(R.id.chaptersBar);
 
+        if (isLoading)
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+        else
+            progressBar.setVisibility(ProgressBar.GONE);
     }
 
     @Override

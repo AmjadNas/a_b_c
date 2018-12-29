@@ -10,11 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:theme="@style/AppTheme">
         <activity
             android:name=".Activities.MainActivity"
-            android:label="@string/title_activity_main"
+            android:label="@string/discover"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,15 +23,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.NewStoryActivity" />
+        <activity android:name=".Activities.NewStoryActivity"
+            android:label="@string/postStory"/>
         <activity android:name=".Activities.AddCommentActivity" />
         <activity
             android:name=".Activities.ProfileActivity"
             android:theme="@style/TranparentOverLay" />
         <activity android:name=".Activities.ViewListActivity" />
         <activity android:name=".Activities.NewChapterActivity" />
-        <activity android:name=".Activities.EditProfileActivity" />
-        <activity android:name=".Activities.WelcomeActivity"/>
+        <activity android:name=".Activities.EditProfileActivity"
+            android:label="@string/editProfile"/>
+        <activity android:name=".Activities.WelcomeActivity"
+            android:label="@string/logIn"/>
 
         <activity
             android:name=".Activities.ChaptersListActivity"
@@ -39,9 +42,12 @@
         <activity
             android:name=".Activities.ViewStoryActivity"
             android:theme="@style/TranparentOverLay" />
-        <activity android:name=".Activities.NewMessageActivity" />
-        <activity android:name=".Activities.NewEventActivity" />
-        <activity android:name=".Activities.SearchActivity" />
+        <activity android:name=".Activities.NewMessageActivity"
+            android:label="@string/newMessage"/>
+        <activity android:name=".Activities.NewEventActivity"
+            android:label="@string/postActivity"/>
+        <activity android:name=".Activities.SearchActivity"
+            android:label="@string/search_for_story"/>
         <activity
             android:name=".Activities.StoriesByActivities"
             android:theme="@style/AppTheme.NoActionBar" />

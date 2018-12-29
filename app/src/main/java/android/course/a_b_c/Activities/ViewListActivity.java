@@ -40,12 +40,16 @@ public class ViewListActivity extends AppCompatActivity  {
                 String storyTitle = intent.getStringExtra(Constants.STORY_TITLE);
                 String title = intent.getStringExtra(Constants.TITLE);
                  c = DataHandler.getInstance().getChapter(storyTitle, title);
-
+                getSupportActionBar().setTitle(c.getTitle());
                 if (c != null)
                     arr = (String[]) c.getLines().toArray();
 
             }else if(R.array.storyCategory == resource || R.array.storyGenre == resource){
                 arr = getResources().getStringArray(resource);
+                if (R.array.storyCategory == resource)
+                    getSupportActionBar().setTitle(R.string.add_categories);
+                else
+                    getSupportActionBar().setTitle(R.string.add_genres);
 
             }
 
