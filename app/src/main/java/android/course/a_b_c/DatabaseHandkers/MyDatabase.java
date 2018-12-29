@@ -61,6 +61,7 @@ public class MyDatabase extends SQLiteOpenHelper {
         db.insert(Constants.USER,null,cv);
 
         db.execSQL(DataBaseOperations.SQL_CREATE_FOLLOWERS);
+        db.execSQL(DataBaseOperations.SQL_CREATE_FOLLOWINGS);
         db.execSQL(DataBaseOperations.SQL_CREATE_MESSAGE);
         db.execSQL(DataBaseOperations.SQL_CREATE_ACTIVITY);
         db.execSQL(DataBaseOperations.SQL_CREATE_ACTIVITY_REPLIES);
@@ -83,6 +84,7 @@ public class MyDatabase extends SQLiteOpenHelper {
         db.execSQL(DataBaseOperations.SQL_DELETE_ACTIVITIES_TABLE);
         db.execSQL(DataBaseOperations.SQL_DELETE_FAVOURITE_STORIES_TABLE);
         db.execSQL(DataBaseOperations.SQL_DELETE_CURRENT_READ_TABLE);
+        db.execSQL(DataBaseOperations.SQL_DELETE_FOLLOWEINGS_TABLE);
         db.execSQL(DataBaseOperations.SQL_DELETE_USERS_TABLE);
         db.execSQL(DataBaseOperations.SQL_DELETE_TAGS_TABLE);
         db.execSQL(DataBaseOperations.SQL_DELETE_GENRES_TABLE);
@@ -398,10 +400,51 @@ public class MyDatabase extends SQLiteOpenHelper {
         return stuff;
     }
 
+    public List<String> getUserFolloers(String...username){
+        List<String> followers = new ArrayList<>();
+        try {
+
+            String[] args = {
+                    Constants.FOLLOWER,
+            };
+
+            Cursor c = db.query(Constants.FOLLOWERS, args, Constants.USERNAME + "=?", username, null, null, null);
+            while (c.moveToNext()){
+                followers.add(c.getString(0));
+            }
+
+            c.close();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return followers;
+    }
+
+    public List<String> getUserFolloeings(String...username){
+        List<String> followers = new ArrayList<>();
+        try {
+
+            String[] args = {
+                    Constants.USERNAME,
+            };
+
+            Cursor c = db.query(Constants.FOLLOWING, args, Constants.FOLLOWER + "=?", username, null, null, null);
+            while (c.moveToNext()){
+                followers.add(c.getString(0));
+            }
+
+            c.close();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return followers;
+    }
+
+
     public boolean isFollowing(String follower, String username) {
         try {
-            Cursor c = db.rawQuery("SELECT * FROM " + Constants.FOLLOWERS + " WHERE " + Constants.USERNAME + "=?"
-                     + " AND "+ Constants.FOLLOWER + "=?" , new String[]{username, follower});
+            Cursor c = db.query(Constants.FOLLOWING,new String[]{username}, Constants.USERNAME + " = " + username
+                     + " AND "+ Constants.FOLLOWER + "=" + follower, null, null, null, null);
 
             if (c.moveToNext()){
                 c.close();
@@ -636,6 +679,7 @@ public class MyDatabase extends SQLiteOpenHelper {
             db.execSQL(DataBaseOperations.SQL_DELETE_ACTIVITIES_REPLIES);
             db.execSQL(DataBaseOperations.SQL_DELETE_ACTIVITIES);
             db.execSQL(DataBaseOperations.SQL_DELETE_CHARACTERS);
+            db.execSQL(DataBaseOperations.SQL_DELETE_FOLLOWEINGS);
             //db.execSQL(DataBaseOperations.SQL_DELETE_USERS);
             db.execSQL(DataBaseOperations.SQL_DELETE_CURRENT_READ);
             db.execSQL(DataBaseOperations.SQL_DELETE_FAVOURITE_STORIES);

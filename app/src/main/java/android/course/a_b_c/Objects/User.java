@@ -166,16 +166,6 @@ public class User {
         return hasOnlineImage;
     }
 
-    public void removeFollowing() {
-        followingCount--;
-    }
-
-    public boolean addFollowing() {
-        followingCount++;
-
-        return true;
-    }
-
     public void addfollower(){
         followersCount++;
     }

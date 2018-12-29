@@ -3,6 +3,7 @@ package android.course.a_b_c.Utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -111,5 +112,14 @@ public final class Converter {
     public static List<String> fromStringToLines(String lines) {
         String[] line = lines.split("\n");
         return Arrays.asList(line);
+    }
+
+    public static Bitmap cropThumbnail(Bitmap image) {
+        try {
+            return ThumbnailUtils.extractThumbnail(image, 108, 108);
+        }catch (Exception e){
+            return null;
+        }
+
     }
 }

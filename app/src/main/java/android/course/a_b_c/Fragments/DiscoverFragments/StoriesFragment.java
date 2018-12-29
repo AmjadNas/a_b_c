@@ -211,4 +211,16 @@ public class StoriesFragment extends Fragment implements View.OnClickListener, N
         adapter.notifyItemInserted(stories.size()-1);
     }
 
+    public void addTofaves(String stringExtra) {
+        Story s = DataHandler.getInstance().getStoryByTitle(stringExtra);
+        stories.add(s);
+        adapter.notifyItemInserted(stories.size()-1);
+    }
+
+    public void removeFromfaves(String stringExtra) {
+        int index = stories.indexOf(new Story(stringExtra));
+        stories.remove(index);
+        adapter.notifyItemRemoved(index);
+    }
+
 }

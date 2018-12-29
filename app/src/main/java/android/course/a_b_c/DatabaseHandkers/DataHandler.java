@@ -47,9 +47,11 @@ public class DataHandler implements NetworkResListener {
     private DataHandler(){}
 
     public static DataHandler getInstance() {
-        if (instance == null)
-            instance = new DataHandler();
-        return instance;
+        synchronized (DataHandler.class) {
+            if (instance == null)
+                instance = new DataHandler();
+            return instance;
+        }
     }
 
     public void initDataBase(Context context){
@@ -145,7 +147,8 @@ public class DataHandler implements NetworkResListener {
     }
 
     private void addStory(Story obj, boolean currReads, boolean faves) {
-        db.insert(Constants.STORY, obj.getContentValues());
+        if (!db.insert(Constants.STORY, obj.getContentValues()))
+            db.update(Constants.STORY, obj.getContentValues(), Constants.TITLE + "=?", obj.getTitle());
 
         updateStriesStuff(obj.getTitle(), obj.getTags(),
                 obj.getGenres(),
@@ -228,11 +231,13 @@ public class DataHandler implements NetworkResListener {
         return list;
     }
 
-    public boolean sendMessage(String reciever, String subject, String message){
-        Message msg = new Message(user.getUsername(), reciever, subject, message);
-        if (db.insert(Constants.MESSAGES, msg.getContentValue())){
-            NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.INSERT_MESSAGE_REQ, msg, this);
-            return true;
+    public boolean sendMessage(String reciever, String subject, String message) {
+        if (!reciever.equals(user.getUsername())) {
+            Message msg = new Message(user.getUsername(), reciever, subject, message);
+            if (db.insert(Constants.MESSAGES, msg.getContentValue())) {
+                NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.INSERT_MESSAGE_REQ, msg, this);
+                return true;
+            }
         }
         return false;
     }
@@ -242,23 +247,25 @@ public class DataHandler implements NetworkResListener {
     }
 
     public boolean followUser(String username){
-        ContentValues cv = new ContentValues();
-        cv.put(Constants.USERNAME, username);
-        cv.put(Constants.FOLLOWER, user.getUsername());
-        if (db.insert(Constants.FOLLOWERS, cv)){
-            NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.FOLLOW_USER, username, user.getUsername(), this);
-            getUser(username).addfollower();
-            return user.addFollowing();
+        if (!username.equals(user.getUsername())) {
+            ContentValues cv = new ContentValues();
+            cv.put(Constants.USERNAME, username);
+            cv.put(Constants.FOLLOWER, user.getUsername());
+            if (db.insert(Constants.FOLLOWING, cv)) {
+                NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.FOLLOW_USER, username, user.getUsername(), this);
+                return true;
+            }
         }
         return false;
     }
 
     public boolean unFollowUser(String username){
-        if (db.delete(Constants.FOLLOWERS, Constants.USERNAME + " =? AND " + Constants.FOLLOWER + "=?", username, user.getUsername())){
-            NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.UNFOLLOW_USER, username, user.getUsername(), this);
-            getUser(username).removeFfollower();
-            user.removeFollowing();
-            return true;
+        if (!username.equals(user.getUsername())) {
+            if (db.delete(Constants.FOLLOWERS, Constants.USERNAME + " =? AND " + Constants.FOLLOWER + "=?", username, user.getUsername())) {
+                NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.UNFOLLOW_USER, username, user.getUsername(), this);
+                getUser(username).removeFfollower();
+                return true;
+            }
         }
         return false;
     }
@@ -298,8 +305,8 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
-    private void addChapterToStory(Chapter c){
-        db.insert(Constants.CHAPTER, c.getContentValues());
+    private boolean addChapterToStory(Chapter c){
+        return db.insert(Constants.CHAPTER, c.getContentValues());
     }
 
     public boolean updateChapter(String str, String txtTitle, String txtContent){
@@ -399,7 +406,9 @@ public class DataHandler implements NetworkResListener {
     }
 
     public boolean isFollowing(String username) {
-        return db.isFollowing(user.getUsername(), username);
+        if (db.getUserFolloers(username).contains(user.getUsername()))
+            return true;
+        return false;
     }
 
     public Bitmap getStoryCover(String title) {
@@ -407,6 +416,14 @@ public class DataHandler implements NetworkResListener {
             return null;
         else {
             return db.getImage(Constants.STORY, Constants.TITLE, title);
+        }
+    }
+
+    public Bitmap getStoryThumbnail(String title) {
+        if (title == null)
+            return null;
+        else {
+            return Converter.cropThumbnail(db.getImage(Constants.STORY, Constants.TITLE, title));
         }
     }
 
@@ -476,7 +493,8 @@ public class DataHandler implements NetworkResListener {
                     list.add(obj);
 
                     final String ttl = obj.getTitle();
-                    addChapterToStory(obj);
+                    if (!addChapterToStory(obj))
+                        updateChapter(obj.getStoryTitle(), obj.getTitle(), obj.getLinesString());
                     adapter.notifyItemInserted(i);
                 }
             }
@@ -615,25 +633,18 @@ public class DataHandler implements NetworkResListener {
         db.insert(Constants.REPLIES, obj.getContentValues());
     }
 
-    public void parseStringList(FollowersAdapter adapter, List<String> list, String tag, JSONObject res) {
+    public void parseFolloweingsist(String username, JSONObject res) {
         try {
-            JSONArray arr = res.getJSONArray(tag);
+            JSONArray arr = res.getJSONArray(Constants.FOLLOWING);
             String obj;
             ContentValues cv = new ContentValues();
             for (int i = 0; i < arr.length(); i++){
                 obj = arr.getString(i);
 
                 if (obj != null){
-                    list.add(obj);
-                    if (tag.equals(Constants.FOLLOWING)) {
-                        cv.put(Constants.USERNAME, obj);
-                        cv.put(Constants.FOLLOWER, user.getUsername());
-                    }else{
-                        cv.put(Constants.USERNAME, user.getUsername());
-                        cv.put(Constants.FOLLOWER, obj);
-                    }
-                    db.insert(Constants.FOLLOWERS, cv);
-                    adapter.notifyItemInserted(i);
+                    cv.put(Constants.USERNAME, obj);
+                    cv.put(Constants.FOLLOWER, username);
+                    db.insert(Constants.FOLLOWING, cv);
                 }
             }
 
@@ -642,8 +653,8 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
-    public List<String> parseStringList (JSONObject res, String followers) {
-        List<String> list = new ArrayList<>();
+    public void parseFollowersList(String username, JSONObject res) {
+
         try {
             JSONArray arr = res.getJSONArray(Constants.FOLLOWERS);
             String obj;
@@ -652,8 +663,7 @@ public class DataHandler implements NetworkResListener {
                 obj = arr.getString(i);
 
                 if (obj != null){
-                    list.add(obj);
-                    cv.put(Constants.USERNAME, user.getUsername());
+                    cv.put(Constants.USERNAME, username);
                     cv.put(Constants.FOLLOWER, obj);
 
                     db.insert(Constants.FOLLOWERS, cv);
@@ -664,7 +674,7 @@ public class DataHandler implements NetworkResListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return list;
+
     }
 
     public List<Message> getSentMessages() {
@@ -779,12 +789,12 @@ public class DataHandler implements NetworkResListener {
     }
 
     public List<String> getUserFollowers(String username) {
-        return db.getStringsStuff(Constants.FOLLOWERS, Constants.USERNAME + "=?", Constants.FOLLOWER, null, username);
+        return db.getUserFolloers(username);
 
     }
 
     public List<String> getUserFollowings(String username) {
-        return db.getStringsStuff(Constants.FOLLOWERS, Constants.FOLLOWER + "=?", Constants.USERNAME, null, username);
+        return db.getUserFolloeings(username);
     }
 
     public boolean dbIsClosed() {

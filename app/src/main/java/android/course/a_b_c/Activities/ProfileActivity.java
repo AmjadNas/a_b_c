@@ -10,6 +10,7 @@ import android.course.a_b_c.Objects.User;
 import android.course.a_b_c.R;
 import android.course.a_b_c.Utils.Constants;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -30,6 +31,8 @@ import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity implements NetworkResListener {
 
+    public static final int ADD_TO_FAVE = -11;
+    public static final int REMOVE_FROM_FAVE = -22;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -42,8 +45,10 @@ public class ProfileActivity extends AppCompatActivity implements NetworkResList
     private boolean isUser, isFollowing;
     private ProfileFragmentsAdapter mSectionsPagerAdapter;
     private String username;
-
+    private TextView fs;
+    private int fCount;
     private final int REQUESTEDITPROF = 30;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,19 +90,18 @@ public class ProfileActivity extends AppCompatActivity implements NetworkResList
             isUser = true;
         }else {
             user = dataHandler.getUser(username);
-            if (dataHandler.isFollowing(username)) {
-                follow.setText(getString(R.string.unfollow));
-                isFollowing = true;
-            }
-        }
 
+        }
+        NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_USER_FOLLOWING, user, this);
         NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_USER_FOLLOWERS, user, this);
     }
 
     private void bindViews() {
         name = (TextView) findViewById(R.id.txt_profileName);
         follow = (TextView) findViewById(R.id.followBtn);
+        follow.setVisibility(View.GONE);
         imageView = (ImageView) findViewById(R.id.backdrop);
+         fs = (TextView)findViewById(R.id.followers_txt_prof);
     }
 
     @Override
@@ -133,8 +137,7 @@ public class ProfileActivity extends AppCompatActivity implements NetworkResList
     private void initCollapsingToolbar() {
         final CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        if (isUser)
-            follow.setVisibility(View.GONE);
+
 
         collapsingToolbar.setTitle(" ");
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
@@ -185,21 +188,29 @@ public class ProfileActivity extends AppCompatActivity implements NetworkResList
             if (requestCode == REQUESTEDITPROF ) {
                 initViews();
             }
+        }else if (resultCode == ADD_TO_FAVE){
+            mSectionsPagerAdapter.getFaveFrag().addTofaves(data.getStringExtra(Constants.STORY_TITLE));
+        }else if (resultCode == REMOVE_FROM_FAVE){
+            mSectionsPagerAdapter.getFaveFrag().removeFromfaves(data.getStringExtra(Constants.STORY_TITLE));
         }
     }
 
     public void followUser(View view) {
+
         if (!isFollowing) {
             if (dataHandler.followUser(username)) {
+                fCount++;
                 follow.setText(getString(R.string.unfollow));
                 isFollowing = true;
             }
         }else {
             if (dataHandler.unFollowUser(username)){
+                fCount--;
                 follow.setText(getString(R.string.follow));
                 isFollowing = false;
             }
         }
+        fs.setText(String.format(getString(R.string.followers), fCount));
     }
 
     public void viewFollowers(View view) {
@@ -215,19 +226,35 @@ public class ProfileActivity extends AppCompatActivity implements NetworkResList
 
     @Override
     public void onPostUpdate(JSONObject res, String table, ResStatus status) {
-        TextView fs = (TextView)findViewById(R.id.followers_txt_prof);
-        int i = 0;
-        if (status == ResStatus.SUCCESS){
-            i =  DataHandler.getInstance().parseStringList(res, Constants.FOLLOWERS).size();
-        }else {
-             i = dataHandler.getUserFollowers(username).size();
+
+
+        if (table.equals(NetworkConnector.GET_USER_FOLLOWERS)){
+
+            int i = 0;
+            if (status == ResStatus.SUCCESS){
+                dataHandler.parseFollowersList(username, res);
+            }
+            i = dataHandler.getUserFollowers(username).size();
+            fCount = i;
+            if (!isUser) {
+                follow.setVisibility(View.VISIBLE);
+                if (dataHandler.isFollowing(username)) {
+                    follow.setText(getString(R.string.unfollow));
+                    isFollowing = true;
+                }
+            }
+            fs.setText(String.format(getString(R.string.followers), fCount));
+
+        }else if (table.equals(NetworkConnector.GET_USER_FOLLOWING)){
+            if (status == ResStatus.SUCCESS)
+                dataHandler.parseFolloweingsist(username, res);
         }
-        String s = getString(R.string.followers) + i;
-        fs.setText(s);
+
     }
 
     @Override
     public void onPostUpdate(Bitmap res, ResStatus status) {
 
     }
+
 }

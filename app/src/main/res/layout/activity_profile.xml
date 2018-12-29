@@ -66,7 +66,7 @@
                     android:id="@+id/followers_txt_prof"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/followers"
+                    android:text="@string/followers_emp"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/backdrop_title"
                     android:textAlignment="center"

@@ -25,15 +25,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessagesAdpater extends RecyclerView.Adapter<MessagesAdpater.MyHolder> {
 
-    private final boolean isNotDelete;
+    private boolean isNotDelete;
+    private boolean isRecived;
     private List<Message> list;
     private Context context;
     private MessageAdapterListener mListener;
 
-    public MessagesAdpater(Context context, List<Message> messages, boolean isNotDelete) {
+    public MessagesAdpater(Context context, List<Message> messages) {
         list = messages;
         this.context = context;
-        this.isNotDelete = isNotDelete;
+
     }
 
     public void setListener(MessageAdapterListener listener){
@@ -71,6 +72,14 @@ public class MessagesAdpater extends RecyclerView.Adapter<MessagesAdpater.MyHold
         notifyDataSetChanged();
     }
 
+    public void setIsNotDelete(boolean b) {
+        isNotDelete = b;
+    }
+
+    public void setSetiSRecieved(boolean equals) {
+        isRecived = equals;
+    }
+
     public class MyHolder extends RecyclerView.ViewHolder{
         private CircleImageView img;
         private TextView name, message, reply, subject;
@@ -82,6 +91,8 @@ public class MessagesAdpater extends RecyclerView.Adapter<MessagesAdpater.MyHold
             message = (TextView) itemView.findViewById(R.id.msg_msg_row);
             subject = (TextView) itemView.findViewById(R.id.subj_msg_row);
             reply = (TextView) itemView.findViewById(R.id.ply_act_row);
+            if (!isRecived)
+                reply.setVisibility(View.GONE);
             reply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -90,14 +101,14 @@ public class MessagesAdpater extends RecyclerView.Adapter<MessagesAdpater.MyHold
                     ((Activity)context).startActivityForResult(intent, Constants.SEND_MESAGE);
                 }
             });
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    if (isNotDelete)
+            if (isNotDelete)
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
                         showDialog();
-                    return isNotDelete;
-                }
-            });
+                        return true;
+                    }
+                });
         }
 
         private void showDialog() {

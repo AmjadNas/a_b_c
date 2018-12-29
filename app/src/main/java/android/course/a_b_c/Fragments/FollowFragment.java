@@ -56,13 +56,13 @@ public class FollowFragment extends Fragment implements NetworkResListener {
         if (getArguments() != null){
             tag = getArguments().getString(Constants.TAG);
             username = getArguments().getString(Constants.USERNAME);
-            if (tag.equals(FOLLOWERS))
-                NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_USER_FOLLOWERS,
-                        new User(username), this);
-            else if (tag.equals(FOLLOWING)) {
-                NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_USER_FOLLOWING,
-                        new User(username), this);
-            }
+         //   if (tag.equals(FOLLOWERS))
+              //  NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_USER_FOLLOWERS,
+                    //    new User(username), this);
+          ///  else if (tag.equals(FOLLOWING)) {
+              //  NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_USER_FOLLOWING,
+                      //  new User(username), this);
+          //  }
             list = new ArrayList<>();
         }
 
@@ -79,6 +79,10 @@ public class FollowFragment extends Fragment implements NetworkResListener {
 
     private void initRecyclerView(View v){
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.menuList);
+        if (tag.equals(FOLLOWERS))
+            list = DataHandler.getInstance().getUserFollowers(username);
+        else if (tag.equals(FOLLOWING))
+            list = DataHandler.getInstance().getUserFollowings(username);
         adapter = new FollowersAdapter(getContext(), list, tag.equals(FOLLOWING));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(8), true));
@@ -99,19 +103,14 @@ public class FollowFragment extends Fragment implements NetworkResListener {
 
     @Override
     public void onPostUpdate(JSONObject res, String table, ResStatus status) {
-        if (status == ResStatus.SUCCESS){
-            if (tag.equals(FOLLOWERS))
-                DataHandler.getInstance().parseStringList(adapter, list, FOLLOWERS,  res);
-            else if (tag.equals(FOLLOWING))
-                DataHandler.getInstance().parseStringList(adapter, list, FOLLOWING,  res);
-        }else {
-            if (tag.equals(FOLLOWERS))
-                list = DataHandler.getInstance().getUserFollowers(username);
-             else if (tag.equals(FOLLOWING))
-                list = DataHandler.getInstance().getUserFollowings(username);
+     //   if (status == ResStatus.SUCCESS){
+          //  if (tag.equals(FOLLOWERS))
+              //  DataHandler.getInstance().parseFollowersList(res);
+          //  else if (tag.equals(FOLLOWING))
+              //  DataHandler.getInstance().parseFolloweingsist(res);
+      //  }else {
 
-            adapter.setList(list);
-        }
+        //}
     }
 
     @Override

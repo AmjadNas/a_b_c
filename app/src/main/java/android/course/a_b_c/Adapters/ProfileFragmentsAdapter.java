@@ -12,6 +12,7 @@ public class ProfileFragmentsAdapter extends FragmentPagerAdapter {
 
     private final String[] header;
     private final String username;
+    private StoriesFragment faveFrag;
 
     public ProfileFragmentsAdapter(Context context, FragmentManager fm, String username){
         super(fm);
@@ -25,7 +26,8 @@ public class ProfileFragmentsAdapter extends FragmentPagerAdapter {
             case 0:
                 return StoriesFragment.newInstance(StoriesFragment.PROFILE_STORIES, username);
             case 1:
-                return StoriesFragment.newInstance(StoriesFragment.FAVOURITES, username);
+                faveFrag = StoriesFragment.newInstance(StoriesFragment.FAVOURITES, username);
+                return faveFrag;
             case 2:
                 return StoriesFragment.newInstance(StoriesFragment.CURRENT_READ, username);
 
@@ -45,4 +47,9 @@ public class ProfileFragmentsAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return header[position];
     }
+
+    public StoriesFragment getFaveFrag() {
+        return faveFrag;
+    }
+
 }

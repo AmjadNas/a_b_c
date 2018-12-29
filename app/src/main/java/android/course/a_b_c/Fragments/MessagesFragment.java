@@ -82,9 +82,11 @@ public class MessagesFragment extends Fragment implements View.OnClickListener, 
 
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.include);
 
-        adapter = new MessagesAdpater(getContext(), messages, !tag.equals(TRASH));
+        adapter = new MessagesAdpater(getContext(), messages);
         if (tag.equals(INBOX) || tag.equals(SENT))
             adapter.setListener((MessagesAdpater.MessageAdapterListener) getParentFragment());
+        adapter.setIsNotDelete(!tag.equals(TRASH));
+        adapter.setSetiSRecieved(tag.equals(INBOX));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(8), true));
@@ -155,7 +157,8 @@ public class MessagesFragment extends Fragment implements View.OnClickListener, 
                 messages = DataHandler.getInstance().getInboxMessages();
             adapter.setMessages(messages);
         }
-        listener.onnLoadingDone();
+        if (listener != null)
+            listener.onnLoadingDone();
     }
 
     @Override

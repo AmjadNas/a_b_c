@@ -69,7 +69,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ParentVi
         myHolder.pageNum.setText(String.valueOf(story.getWrodCount()));
         myHolder.chapterNum.setText(String.valueOf(story.getChapterCount()));
         myHolder.status.setText(story.getStatusString());
-        //myHolder.thumbnail.setImageBitmap(DataHandler.getInstance().getStoryCover(story.getTitle()));
+        myHolder.thumbnail.setImageBitmap(DataHandler.getInstance().getStoryThumbnail(story.getTitle()));
         if (viewType == MY_STORY_VIEW_TYPE) {
             ((MyStoryViewHolder)myHolder).addChapter.setOnClickListener(getClickListener(NewChapterActivity.class, i));
             ((MyStoryViewHolder)myHolder).viewChapterList.setOnClickListener(getClickListener(ChaptersListActivity.class, i));
@@ -122,7 +122,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ParentVi
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ViewStoryActivity.class);
                     intent.putExtra(Constants.RESOURCE, list.get(getAdapterPosition()).getTitle());
-                    context.startActivity(intent);
+                    ((Activity)context).startActivityForResult(intent, 1);
                 }
             });
         }

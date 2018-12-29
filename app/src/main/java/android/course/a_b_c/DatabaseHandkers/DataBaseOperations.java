@@ -76,6 +76,14 @@ public final class DataBaseOperations {
             "FOREIGN KEY (" + Constants.FOLLOWER + ") REFERENCES " + Constants.USER + " (" +Constants.USERNAME + "), "+
             "CONSTRAINT PK6 PRIMARY KEY (" + Constants.USERNAME + "," + Constants.FOLLOWER + ")" +
             ")";
+    protected static final String SQL_CREATE_FOLLOWINGS = "CREATE TABLE "
+            + Constants.FOLLOWING + " (" +
+            Constants.FOLLOWER + " VARCHAR(12), " +
+            Constants.USERNAME + " VARCHAR(12), " +
+            "FOREIGN KEY (" + Constants.USERNAME + ") REFERENCES " + Constants.USER + " (" +Constants.USERNAME + "), "+
+            "FOREIGN KEY (" + Constants.FOLLOWER + ") REFERENCES " + Constants.USER + " (" +Constants.USERNAME + "), "+
+            "CONSTRAINT PK12 PRIMARY KEY (" + Constants.USERNAME + "," + Constants.FOLLOWER + ")" +
+            ")";
     protected static final String SQL_CREATE_MESSAGE = "CREATE TABLE "
             + Constants.MESSAGES + " (" +
             Constants.SENDER + " VARCHAR(12), "+
@@ -152,6 +160,9 @@ public final class DataBaseOperations {
     protected static final String SQL_DELETE_FOLLOWERS_TABLE =
             "DROP TABLE IF EXISTS " + Constants.FOLLOWERS;
 
+    protected static final String SQL_DELETE_FOLLOWEINGS_TABLE =
+            "DROP TABLE IF EXISTS " + Constants.FOLLOWING;
+
     protected static final String SQL_DELETE_MESSAGES_TABLE =
             "DROP TABLE IF EXISTS " + Constants.MESSAGES;
 
@@ -211,4 +222,7 @@ public final class DataBaseOperations {
 
     protected static final String SQL_DELETE_CURRENT_READ =
             "DELETE FROM " + Constants.READING_STORIES;
+
+    protected static final String SQL_DELETE_FOLLOWEINGS =
+            "DELETE FROM " + Constants.FOLLOWING;
 }

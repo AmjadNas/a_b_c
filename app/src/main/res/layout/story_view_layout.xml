@@ -39,7 +39,8 @@
         android:fontFamily="sans-serif-condensed"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold"
-        android:text="TextView" />
+        android:text="TextView"
+        android:onClick="goToProfile"/>
 
     <TextView
         android:id="@+id/synop_vs"

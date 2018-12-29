@@ -82,16 +82,22 @@ public class ViewStoryActivity extends AppCompatActivity {
                 shareItem();
                 return true;
             case R.id.action_fave:
+                Intent intent = new Intent();
                 if (DataHandler.getInstance().userLikes(story.getTitle())) {
-                    if (DataHandler.getInstance().unLikeStory(story.getTitle(), true))
+                    if (DataHandler.getInstance().unLikeStory(story.getTitle(), true)) {
                         story.decreaseLikes();
+                        intent.putExtra(Constants.STORY_TITLE,story.getTitle());
+                        setResult(ProfileActivity.REMOVE_FROM_FAVE, intent);
+                    }
                 }
                 else {
-                    if (DataHandler.getInstance().LikeStory(story.getTitle(), true))
+                    if (DataHandler.getInstance().LikeStory(story.getTitle(), true)) {
                         story.increaseLikes();
+                        intent.putExtra(Constants.STORY_TITLE,story.getTitle());
+                        setResult(ProfileActivity.ADD_TO_FAVE, intent);
+                    }
                 }
                 likes.setText(String.valueOf(story.getLikes()));
-
                 return true;
             case R.id.actiod_addto_current:
                 DataHandler.getInstance().addToCurrentReading(story.getTitle(), true);
@@ -240,5 +246,11 @@ public class ViewStoryActivity extends AppCompatActivity {
             comments.setText(String.valueOf(cmts));
             adapter.notifyItemChanged(index);
         }
+    }
+
+    public void goToProfile(View view) {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(Constants.USERNAME, story.getAuthor());
+        startActivity(intent);
     }
 }

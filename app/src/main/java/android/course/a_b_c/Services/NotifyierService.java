@@ -155,7 +155,7 @@ public class NotifyierService extends Service implements IResultReceiver {
 		notificationBuilder.setAutoCancel(true);
 		notificationBuilder.setContentTitle(contentTitle);
 		notificationBuilder.setContentText(contentText);
-		notificationBuilder.setGroup(contentTitle);
+		notificationBuilder.setGroup(type);
 		notificationBuilder.setContentIntent(mContentIntent).setSound(soundURI);
 		notificationBuilder.setVibrate(mVibratePattern);
 
