@@ -76,7 +76,6 @@ public class ProjectResourceServlet extends HttpServlet {
     private static final int GET_STORY_CHAPTERS = 32;
     private static final int DELETE_MESSAGE_REQ = 33;
 
-
     private static final String RESOURCE_FAIL_TAG = "{\"result_code\":0}";
     private static final String RESOURCE_SUCCESS_TAG = "{\"result_code\":1}";
 

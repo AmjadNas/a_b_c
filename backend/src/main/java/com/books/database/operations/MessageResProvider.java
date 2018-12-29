@@ -21,7 +21,7 @@ public class MessageResProvider {
             Constants.SUBJECT + ", " +
 			Constants.MESSAGE + ", " +
 			Constants.DATE +
-			") VALUES (?,?,?,?);";
+			") VALUES (?,?,?,?,?);";
     private static final String DELETE_MEESSAGE = "DELETE FROM " + Constants.MESSAGES +
             " WHERE " + Constants.SENDER + " =? AND " +
             Constants.USERNAME + " =? AND " +
