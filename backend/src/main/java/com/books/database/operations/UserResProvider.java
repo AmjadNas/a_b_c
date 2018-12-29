@@ -14,11 +14,11 @@ import java.sql.Blob;
 
 public class UserResProvider {
 
-    private static final String GET_USER_FOR_ITEM = "SELECT * FROM " + Constants.USERS + " WHERE " + Constants.USERNAME + " =?;";
-    private static final String GET_USER = "SELECT * FROM " + Constants.USERS + " WHERE " + Constants.USERNAME + " =? AND " +
+    private static final String GET_USER_FOR_ITEM = "SELECT * FROM " + Constants.USER + " WHERE " + Constants.USERNAME + " =?;";
+    private static final String GET_USER = "SELECT * FROM " + Constants.USER + " WHERE " + Constants.USERNAME + " =? AND " +
                                 Constants.PASSWORD + " =?;";
-    private static final String GET_IMAGE =  "SELECT " + Constants.IMAGE + " FROM " + Constants.USERS + " WHERE " + Constants.USERNAME + " =?;";
-    private static final String INSERT_USER =  "INSERT INTO " + Constants.USERS + " (" +
+    private static final String GET_IMAGE =  "SELECT " + Constants.IMAGE + " FROM " + Constants.USER + " WHERE " + Constants.USERNAME + " =?;";
+    private static final String INSERT_USER =  "INSERT INTO " + Constants.USER + " (" +
             Constants.USERNAME + ", " +
             Constants.FNAME + ", " +
             Constants.LNAME + ", " +
@@ -26,14 +26,14 @@ public class UserResProvider {
             Constants.PASSWORD +", " +
             Constants.IMAGE +") " +
             "VALUES (?, ?, ?, ?, ?, ?);";
-    private static final String UPDATE_USER = "UPDATE "+ Constants.USERS + " SET " +
+    private static final String UPDATE_USER = "UPDATE "+ Constants.USER + " SET " +
             Constants.FNAME + " =?, " +
             Constants.LNAME + " =?, " +
             Constants.EMAIL +" =?, "  +
             Constants.PASSWORD +" =?, " +
             Constants.IMAGE +" =?"
             + " WHERE " + Constants.USERNAME + " =?;";
-    private static final String DELETE_USER = "DELETE FROM " + Constants.USERS + " WHERE " + Constants.USERNAME + " =?;";
+    private static final String DELETE_USER = "DELETE FROM " + Constants.USER + " WHERE " + Constants.USERNAME + " =?;";
 
 
     public boolean insertUser(User user, Connection conn){
