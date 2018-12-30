@@ -3,6 +3,7 @@ package android.course.books_312316433_313601130.Activities;
 import android.course.books_312316433_313601130.Fragments.FollowFragment;
 import android.course.books_312316433_313601130.R;
 import android.course.books_312316433_313601130.Utils.Constants;
+import android.course.books_312316433_313601130.Utils.DataLoadingListener;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.support.v7.widget.Toolbar;
 
-public class FollowActivity extends AppCompatActivity {
+public class FollowActivity extends AppCompatActivity implements  DataLoadingListener {
     private String username;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +26,13 @@ public class FollowActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chapters_list);
         username = getIntent().getStringExtra(Constants.USERNAME);
 
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        getSupportActionBar().setTitle(R.string.socials);
 
         ViewPager viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new PageAdapter(getSupportFragmentManager()));
@@ -67,5 +76,20 @@ public class FollowActivity extends AppCompatActivity {
         public int getCount() {
             return header.length;
         }
+    }
+
+    @Override
+    public void onLoadingStart() {
+        ProgressBar progressBar = toolbar.findViewById(R.id.chaptersBar);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
+
+    }
+
+    @Override
+    public void onnLoadingDone() {
+        ProgressBar progressBar = toolbar.findViewById(R.id.chaptersBar);
+        progressBar.setVisibility(ProgressBar.GONE);
+
+
     }
 }

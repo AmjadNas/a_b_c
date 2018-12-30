@@ -1,5 +1,6 @@
 package android.course.books_312316433_313601130.Fragments;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.course.books_312316433_313601130.Adapters.FollowersAdapter;
 import android.course.books_312316433_313601130.Adapters.GridSpacingItemDecoration;
@@ -8,6 +9,7 @@ import android.course.books_312316433_313601130.Network.NetworkResListener;
 import android.course.books_312316433_313601130.Network.ResStatus;
 import android.course.books_312316433_313601130.R;
 import android.course.books_312316433_313601130.Utils.Constants;
+import android.course.books_312316433_313601130.Utils.DataLoadingListener;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +21,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import org.json.JSONObject;
 
@@ -34,6 +37,7 @@ public class FollowFragment extends Fragment implements NetworkResListener {
     private List<String> list;
     private FollowersAdapter adapter;
     private String username;
+    private DataLoadingListener mListener;
 
     public FollowFragment(){}
 
@@ -61,8 +65,19 @@ public class FollowFragment extends Fragment implements NetworkResListener {
           //  }
             list = new ArrayList<>();
         }
+    }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof DataLoadingListener)
+            mListener = (DataLoadingListener)context;
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     @Nullable
@@ -74,15 +89,22 @@ public class FollowFragment extends Fragment implements NetworkResListener {
     }
 
     private void initRecyclerView(View v){
+        if (mListener != null)
+            mListener.onLoadingStart();
+
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.menuList);
         if (tag.equals(FOLLOWERS))
             list = DataHandler.getInstance().getUserFollowers(username);
         else if (tag.equals(FOLLOWING))
             list = DataHandler.getInstance().getUserFollowings(username);
+
         adapter = new FollowersAdapter(getContext(), list, tag.equals(FOLLOWING));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(8), true));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+        if (mListener != null)
+            mListener.onnLoadingDone();
     }
     /**
      * Converting dp to pixel
@@ -107,10 +129,13 @@ public class FollowFragment extends Fragment implements NetworkResListener {
       //  }else {
 
         //}
+
     }
 
     @Override
     public void onPostUpdate(Bitmap res, ResStatus status) {
 
     }
+
+
 }
