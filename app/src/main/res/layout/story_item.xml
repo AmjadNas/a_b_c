@@ -23,11 +23,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="TextView"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
-                android:textSize="20dp"/>
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/txt_st_writtenby"
@@ -36,7 +35,7 @@
                 android:layout_below="@id/text_st_title"
                 android:layout_alignStart="@id/text_st_title"
                 android:layout_marginTop="5dp"
-                android:text="Written by:" />
+                android:text="@string/written_by" />
 
             <TextView
                 android:id="@+id/txt_st_writer"
@@ -45,7 +44,6 @@
                 android:layout_alignTop="@+id/txt_st_writtenby"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/txt_st_writtenby"
-                android:text="TextView"
                 android:textStyle="bold" />
 
             <ImageView
@@ -65,9 +63,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/st_thumb"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="131dp"
-                android:text="TextView" />
+                android:layout_toEndOf="@id/st_thumb"
+                android:layout_marginStart="10dp"
+                />
 
             <TextView
                 android:id="@+id/label_st_chapters"
@@ -76,7 +74,7 @@
                 android:layout_alignStart="@id/txt_st_status"
                 android:layout_below="@id/txt_st_status"
                 android:layout_marginTop="5dp"
-                android:text="Chapters:" />
+                android:text="@string/chapters" />
 
             <TextView
                 android:id="@+id/label_st_length"
@@ -85,16 +83,16 @@
                 android:layout_marginTop="5dp"
                 android:layout_below="@id/label_st_chapters"
                 android:layout_alignStart="@id/txt_st_status"
-                android:text="Length:" />
+                android:text="@string/length" />
 
             <TextView
                 android:id="@+id/label_st_categories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/st_thumb"
-                android:layout_alignStart="@+id/text_st_title"
+                android:layout_alignStart="@id/text_st_title"
                 android:layout_marginTop="10dp"
-                android:text="Categories:" />
+                android:text="@string/categories" />
 
             <TextView
                 android:id="@+id/lbl_gnres"
@@ -104,7 +102,7 @@
                 android:layout_below="@id/txt_st_categories"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:text="Genre:" />
+                android:text="@string/genre" />
 
             <TextView
                 android:id="@+id/txt_st_chaptersCount"
@@ -113,7 +111,6 @@
                 android:layout_alignTop="@id/label_st_chapters"
                 android:layout_toEndOf="@id/label_st_chapters"
                 android:layout_marginStart="10dp"
-                android:text="count"
                 android:textStyle="bold" />
 
             <TextView
@@ -121,9 +118,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/label_st_length"
-                android:layout_alignTop="@+id/label_st_length"
+                android:layout_alignTop="@id/label_st_length"
                 android:layout_marginStart="10dp"
-                android:text="length"
                 android:textStyle="bold"/>
 
             <TextView
@@ -133,7 +129,6 @@
                 android:layout_alignTop="@id/lbl_gnres"
                 android:layout_toEndOf="@id/lbl_gnres"
                 android:layout_alignStart="@id/txt_st_categories"
-                android:text="TextView"
                 android:textStyle="bold" />
 
             <TextView
@@ -144,7 +139,7 @@
                 android:layout_toEndOf="@id/label_st_categories"
                 android:layout_marginStart="10dp"
                 android:textStyle="bold"
-                android:text="TextView" />
+                />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

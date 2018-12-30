@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.WelcomeActivity">
+    tools:context="android.course.books_312316433_313601130.Activities.WelcomeActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -18,8 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="3"
-            android:onClick="LaunchAmjad"
-            android:text="Amjad Nassar" />
+            android:onClick="LaunchJenna"
+            android:text="Jenna Smith" />
 
         <Button
             android:id="@+id/button3"
@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="3"
-            android:onClick="LaunchAiman"
-            android:text="Aiman Younis" />
+            android:onClick="LaunchArthur"
+            android:text="Arthur Morgan" />
 
         <Button
             android:id="@+id/Button5"
@@ -38,6 +38,15 @@
             android:layout_weight="3"
             android:onClick="LaunchJohn"
             android:text="John Smith" />
+
+        <Button
+            android:id="@+id/Button6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="3"
+            android:onClick="LaunchShelly"
+            android:text="Shelly Smith" />
 
     </LinearLayout>
 

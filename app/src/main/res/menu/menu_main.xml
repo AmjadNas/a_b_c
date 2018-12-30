@@ -16,5 +16,5 @@
         android:id="@+id/logOut"
         android:icon="@android:drawable/ic_lock_power_off"
         android:title="@string/log_out"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 </menu>

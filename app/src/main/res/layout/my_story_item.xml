@@ -25,12 +25,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="TextView"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="10dp"
-                android:textSize="20dp"/>
+                android:textSize="20sp"/>
 
             <ImageView
                 android:id="@+id/st_thumb"
@@ -49,9 +48,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/st_thumb"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="131dp"
-                android:text="TextView" />
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/st_thumb" />
 
             <TextView
                 android:id="@+id/label_st_chapters"
@@ -60,7 +58,7 @@
                 android:layout_alignStart="@id/txt_st_status"
                 android:layout_below="@id/txt_st_status"
                 android:layout_marginTop="5dp"
-                android:text="Chapters:" />
+                android:text="@string/chapters" />
 
             <TextView
                 android:id="@+id/label_st_length"
@@ -69,7 +67,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_below="@id/label_st_chapters"
                 android:layout_alignStart="@id/txt_st_status"
-                android:text="Length:" />
+                android:text="@string/length" />
 
             <TextView
                 android:id="@+id/lbl_chapters_add"
@@ -79,7 +77,7 @@
                 android:layout_alignStart="@id/text_st_title"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
-                android:text="Add Chapters"
+                android:text="@string/add_chapters"
                 android:textStyle="bold" />
 
             <TextView
@@ -87,10 +85,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/label_st_chapters"
-                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@id/label_st_chapters"
                 android:layout_marginTop="1dp"
-                android:layout_marginEnd="139dp"
-                android:text="count"
+                android:layout_marginStart="5dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -98,8 +95,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/txt_st_chaptersCount"
-                android:layout_alignTop="@+id/label_st_length"
-                android:text="length"
+                android:layout_toEndOf="@id/label_st_length"
+                android:layout_alignTop="@id/label_st_length"
                 android:textStyle="bold"/>
 
             <TextView

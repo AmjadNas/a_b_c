@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:fontFamily="sans-serif"
-        android:text="TextView"
         android:textAlignment="viewStart"
         android:textSize="18sp"
         android:textStyle="bold|italic" />

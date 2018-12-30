@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".Activities.ProfileActivity">
+    tools:context="android.course.books_312316433_313601130.Activities.ProfileActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

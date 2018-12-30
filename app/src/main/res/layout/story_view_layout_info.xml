@@ -44,7 +44,7 @@
         android:fontFamily="sans-serif-condensed"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold"
-        android:text="TextView" />
+         />
 
     <TextView
         android:id="@+id/txt_cates_st_view"
@@ -56,7 +56,7 @@
         android:fontFamily="sans-serif-condensed"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold"
-        android:text="TextView" />
+         />
 
     <TextView
         android:id="@+id/txt_genres_st_view"
@@ -68,5 +68,5 @@
         android:layout_marginStart="10dp"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold"
-        android:text="TextView" />
+         />
 </RelativeLayout>

@@ -17,6 +17,6 @@
     <item
         android:id="@+id/actiod_addto_current"
         android:icon="@drawable/ic_stories_black_24dp"
-        android:title="Add to Current Reading"
+        android:title="@string/add_to_current_reading"
         app:showAsAction="always" />
 </menu>

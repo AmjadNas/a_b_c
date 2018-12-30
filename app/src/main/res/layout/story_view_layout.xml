@@ -14,7 +14,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:fontFamily="sans-serif"
-        android:text="Title"
+
         android:textColor="@android:color/background_dark"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -26,7 +26,7 @@
         android:layout_alignStart="@id/txt_title_vs"
         android:layout_below="@id/txt_title_vs"
         android:layout_marginTop="10dp"
-        android:text="Written by:" />
+        android:text="@string/written_by" />
 
     <TextView
         android:id="@+id/wt_by_vs"
@@ -39,7 +39,6 @@
         android:fontFamily="sans-serif-condensed"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold"
-        android:text="TextView"
         android:onClick="goToProfile"/>
 
     <TextView
@@ -51,7 +50,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:nestedScrollingEnabled="true"
-        android:text="TEXT" />
+         />
 
     <TextView
         android:id="@+id/pub_vs_lbl"
@@ -60,7 +59,7 @@
         android:layout_below="@id/synop_vs"
         android:layout_alignStart="@id/txt_title_vs"
         android:layout_marginTop="10dp"
-        android:text="Published On:" />
+        android:text="@string/published_on" />
 
     <TextView
         android:id="@+id/pub_vs"
@@ -69,7 +68,7 @@
         android:layout_alignTop="@id/pub_vs_lbl"
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@id/pub_vs_lbl"
-        android:text="TextView" />
+         />
 
     <TextView
         android:id="@+id/rate_vs_lbl"
@@ -78,7 +77,7 @@
         android:layout_below="@id/pub_vs_lbl"
         android:layout_alignStart="@id/txt_title_vs"
         android:layout_marginTop="10dp"
-        android:text="Rated:" />
+        android:text="@string/rated" />
 
     <TextView
         android:id="@+id/rate_vs"
@@ -89,7 +88,6 @@
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@id/rate_vs_lbl"
         android:fontFamily="sans-serif-condensed"
-        android:text="TextView"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold" />
 
@@ -100,7 +98,7 @@
         android:layout_alignStart="@id/txt_title_vs"
         android:layout_below="@id/rate_vs_lbl"
         android:layout_marginTop="2dp"
-        android:text="Language" />
+        android:text="@string/language" />
 
     <TextView
         android:id="@+id/lks_vs_lbl"
@@ -109,7 +107,7 @@
         android:layout_below="@id/lang_vs_lbl"
         android:layout_alignStart="@id/txt_title_vs"
         android:layout_marginTop="2dp"
-        android:text="Favourites" />
+        android:text="@string/favourites" />
 
     <TextView
         android:id="@+id/cmts_vs_lbl"
@@ -118,7 +116,7 @@
         android:layout_below="@id/lks_vs_lbl"
         android:layout_alignStart="@id/txt_title_vs"
         android:layout_marginTop="2dp"
-        android:text="Comments" />
+        android:text="@string/comments" />
 
     <TextView
         android:id="@+id/Len_vs_lbl"
@@ -127,7 +125,7 @@
         android:layout_below="@id/cmts_vs_lbl"
         android:layout_alignStart="@id/txt_title_vs"
         android:layout_marginTop="2dp"
-        android:text="Length" />
+        android:text="@string/length" />
 
     <TextView
         android:id="@+id/copm_vs_lbl"
@@ -137,7 +135,7 @@
         android:layout_alignStart="@id/txt_title_vs"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="5dp"
-        android:text="Completed" />
+        android:text="@string/completed" />
 
     <TextView
         android:id="@+id/lang_vs"
@@ -147,7 +145,6 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@id/lang_vs_lbl"
-        android:text="TextView"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold" />
 
@@ -160,7 +157,6 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="0dp"
         android:layout_toEndOf="@id/lks_vs_lbl"
-        android:text="TextView"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold" />
 
@@ -172,7 +168,6 @@
         android:layout_toEndOf="@id/cmts_vs_lbl"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:text="TextView"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold" />
 
@@ -184,7 +179,6 @@
         android:layout_marginStart="23dp"
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@+id/Len_vs_lbl"
-        android:text="TextView"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold" />
 
@@ -196,7 +190,6 @@
         android:layout_marginStart="13dp"
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@+id/copm_vs_lbl"
-        android:text="TextView"
         android:textColor="@android:color/background_dark"
         android:textStyle="bold" />
 </RelativeLayout>

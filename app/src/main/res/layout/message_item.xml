@@ -47,7 +47,7 @@
                 android:layout_below="@id/name_act_row"
                 android:layout_alignStart="@id/name_act_row"
                 android:layout_toEndOf="@id/prof_act_thumb"
-                android:text="TextView" />
+                />
 
             <TextView
                 android:id="@+id/msg_msg_row"

@@ -3,11 +3,11 @@
 
     <item
         android:id="@+id/share_menu_st"
-        android:title="Share" />
+        android:title="@string/share" />
     <item
         android:id="@+id/edit_menu_st"
-        android:title="Edit" />
+        android:title="@string/edit" />
     <item
         android:id="@+id/delete_menu_st"
-        android:title="Delete" />
+        android:title="@string/delete" />
 </menu>

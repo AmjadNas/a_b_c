@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <files-path name="shared_images" path="images/" />
+    <external-path path="Android/data/android.course.books_312316433_313601130/files/Pictures" name="my_images"/>
 
 </paths>

@@ -37,7 +37,6 @@
     <string name="answerNo">No</string>
     <string name="askContinue">Do you want to continue removal ?</string>
     <string name="itemDeleted">Item deleted</string>
-    <string name="completed">Completed</string>
     <string name="post_a_message_to_your_followers">Post a message to your followers</string>
     <string name="post_activity">Post Activity</string>
     <string name="message">Message</string>
@@ -78,6 +77,24 @@
     <string name="editProfile">Edit Profile</string>
     <string name="postStory">Post a Story</string>
     <string name="add_genres">Add Genres</string>
+    <string name="like">Like</string>
+    <string name="comment">Comment</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="add_to_current_reading">Add to Current Reading</string>
+    <string name="written_by">Written by:</string>
+    <string name="published_on">Published On:</string>
+    <string name="rated">Rated:</string>
+    <string name="language">Language</string>
+    <string name="favourites">Favourites</string>
+    <string name="comments">Comments</string>
+    <string name="length">Length</string>
+    <string name="completed">Completed</string>
+    <string name="genre">Genre</string>
+    <string name="chapters">Chapters:</string>
+    <string name="add_chapters">Add Chapters</string>
+    <string name="chapters_list">Chapters List</string>
+
 
     <string-array name="ratings">
         <item>Ten</item>
