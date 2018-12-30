@@ -39,22 +39,29 @@ public class MyDatabase extends SQLiteOpenHelper {
         db.execSQL(DataBaseOperations.SQL_CREATE_USER_TABLE);
 
         ContentValues cv = new ContentValues();
-        cv.put(Constants.USERNAME,"aNas");
-        cv.put(Constants.FNAME,"Amjad");
-        cv.put(Constants.LNAME,"Nassar");
+        cv.put(Constants.USERNAME,"aMorg");
+        cv.put(Constants.FNAME,"Arthur");
+        cv.put(Constants.LNAME,"Morgan");
         cv.put(Constants.EMAIL,"asdas@dsad.com");
         cv.put(Constants.PASSWORD,"123456");
         db.insert(Constants.USER,null,cv);
 
-        cv.put(Constants.USERNAME,"aYoun");
-        cv.put(Constants.FNAME,"Aiman");
-        cv.put(Constants.LNAME,"Younis");
+        cv.put(Constants.USERNAME,"sSmith");
+        cv.put(Constants.FNAME,"Shelly");
+        cv.put(Constants.LNAME,"Smith");
         cv.put(Constants.EMAIL,"asdas@dsad.com");
         cv.put(Constants.PASSWORD,"123456");
         db.insert(Constants.USER,null,cv);
 
         cv.put(Constants.USERNAME,"jSmith");
         cv.put(Constants.FNAME,"John");
+        cv.put(Constants.LNAME,"Smith");
+        cv.put(Constants.EMAIL,"asdas@dsad.com");
+        cv.put(Constants.PASSWORD,"123456");
+        db.insert(Constants.USER,null,cv);
+
+        cv.put(Constants.USERNAME,"jenSmith");
+        cv.put(Constants.FNAME,"Jenna");
         cv.put(Constants.LNAME,"Smith");
         cv.put(Constants.EMAIL,"asdas@dsad.com");
         cv.put(Constants.PASSWORD,"123456");
