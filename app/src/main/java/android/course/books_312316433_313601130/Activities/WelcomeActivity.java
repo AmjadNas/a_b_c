@@ -9,6 +9,7 @@ import android.view.View;
 
 public class WelcomeActivity extends AppCompatActivity {
     private Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +27,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     public void LaunchShelly(View view) {
         intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Constants.USERNAME, "aNas");
+        intent.putExtra(Constants.USERNAME, "sSmith");
         intent.putExtra(Constants.PASSWORD, "123456");
         startActivity(intent);
         finish();
@@ -34,7 +35,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     public void LaunchArthur(View view) {
         intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Constants.USERNAME, "aNas");
+        intent.putExtra(Constants.USERNAME, "aMorg");
         intent.putExtra(Constants.PASSWORD, "123456");
         startActivity(intent);
         finish();
@@ -42,7 +43,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     public void LaunchJenna(View view) {
         intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Constants.USERNAME, "aNas");
+        intent.putExtra(Constants.USERNAME, "jenSmith");
         intent.putExtra(Constants.PASSWORD, "123456");
         startActivity(intent);
         finish();
