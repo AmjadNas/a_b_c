@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,15 +22,19 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import java.util.List;
+import java.util.Stack;
+
+import static android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, DataLoadingListener {
 
    // private FrameLayout frame;
     private DataHandler dataHandler;
     private Intent intent;
-    private int precID;
     private Toolbar toolbar;
     private BottomNavigationView navigation;
+    private Stack<Integer> ids;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +57,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 
         if (dataHandler.getUser() != null) {
-            //frame = (FrameLayout) findViewById(R.id.frag_container);
-             navigation = (BottomNavigationView) findViewById(R.id.navigation);
+            ids = new Stack<>();
+            navigation = (BottomNavigationView) findViewById(R.id.navigation);
             navigation.setOnNavigationItemSelectedListener(this);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frag_container, TabbedFragment.newInstance(R.id.navigation_home))
                     .commit();
-           // navigation.setSelectedItemId(R.id.navigation_home);
-            precID = R.id.navigation_home;
 
-           // intent = new Intent(this, NotifyierService.class);
-           // startService(intent);
+            ids.push(R.id.navigation_home);
+
+            intent = new Intent(this, NotifyierService.class);
+            startService(intent);
         }else {
             launchActivity(WelcomeActivity.class, null);
             finish();
@@ -78,10 +83,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         startActivity(intent);
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            ids.pop();
+            int id = ids.peek();
+            navigation.getMenu().findItem(id).setChecked(true);
+            getSupportActionBar().setTitle(navigation.getMenu().findItem(id).getTitle());
+        }
+        super.onBackPressed();
     }
 
     @Override
@@ -94,8 +111,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 launchActivity(SearchActivity.class, null);
                 return true;
             case R.id.logOut:
-               // intent = new Intent(this, NotifyierService.class);
-               // stopService(intent);
+                intent = new Intent(this, NotifyierService.class);
+                stopService(intent);
                 DataHandler.getInstance().logOut();
                 DataHandler.getInstance().closeDataBase();
                 launchActivity(WelcomeActivity.class, null);
@@ -109,10 +126,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onNavigationItemSelected (@NonNull MenuItem item){
-        item.setCheckable(true);
-        if (precID != item.getItemId()) {
+
+        if (ids.peek() != item.getItemId()) {
             replaceFragment(TabbedFragment.newInstance(item.getItemId()));
-            precID = item.getItemId();
+            getSupportActionBar().setTitle(item.getTitle());
+            ids.push(item.getItemId());
             return true;
        }
         return false;
@@ -120,10 +138,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void replaceFragment(Fragment fragment){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frag_container, fragment);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack("Frag");
         transaction.commit();
+        final int count = fragmentManager.getBackStackEntryCount();
+
+
     }
 
 
