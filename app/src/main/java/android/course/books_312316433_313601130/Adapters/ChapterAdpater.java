@@ -154,9 +154,9 @@ public class ChapterAdpater extends RecyclerView.Adapter<ChapterAdpater.ChapterH
 
     private void shareItem(int pos) {
         Intent intent = new Intent(Intent.ACTION_SEND);
-
+        int i = pos + 1;
         intent.putExtra(Intent.EXTRA_TEXT, " Story title: " + list.get(pos).getTitle() +
-                "\n Chapter number: " + pos +
+                "\n Chapter number: " + i +
                 "\n Chapter name: " + list.get(pos).getTitle());
 
         intent.setType("text/plain");
