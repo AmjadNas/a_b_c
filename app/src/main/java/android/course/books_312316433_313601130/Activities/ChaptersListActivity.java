@@ -29,7 +29,8 @@ public class ChaptersListActivity extends AppCompatActivity implements ChaptersF
         setContentView(R.layout.activity_chapters_list);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        
+        getSupportActionBar().setTitle(R.string.chapters_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
