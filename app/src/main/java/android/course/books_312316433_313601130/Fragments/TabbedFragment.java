@@ -29,7 +29,7 @@ import android.course.books_312316433_313601130.R;
  * Use the {@link TabbedFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TabbedFragment extends Fragment implements ViewPager.OnPageChangeListener, StoriesAdapter.StoryAdapterListener, MessagesAdpater.MessageAdapterListener {
+public class TabbedFragment extends Fragment implements ViewPager.OnPageChangeListener, StoriesAdapter.StoryAdapterListener, MessagesAdpater.MessageAdapterListener, Refreshable {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -133,7 +133,7 @@ public class TabbedFragment extends Fragment implements ViewPager.OnPageChangeLi
                             requestCode, resultCode, data);
                     break;
                 case R.id.navigation_mStories: case R.id.navigation_activities:
-                    getChildFragmentManager().getFragments().get(page).onActivityResult(
+                    getChildFragmentManager().getFragments().get(0).onActivityResult(
                             requestCode, resultCode, data);
                     break;
                 case R.id.navigation_messages:
@@ -182,6 +182,14 @@ public class TabbedFragment extends Fragment implements ViewPager.OnPageChangeLi
             ((MessagesFragment)getChildFragmentManager().getFragments().get(2)).addToDeletedList(message);
 
 
+    }
+
+    @Override
+    public void refresh() {
+        Fragment fragment = getChildFragmentManager().getFragments().get(page);
+
+        if (fragment instanceof  Refreshable)
+            ((Refreshable)getChildFragmentManager().getFragments().get(page)).refresh();
     }
 
     /**

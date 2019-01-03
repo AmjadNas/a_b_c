@@ -33,7 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivitiesFragment extends Fragment implements View.OnClickListener, NetworkResListener {
+public class ActivitiesFragment extends Fragment implements View.OnClickListener, NetworkResListener, Refreshable {
 
     private static final int ADD_ACTIVITY = 555;
     private ActivitiesAdapter adapter;
@@ -108,8 +108,8 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         listener = null;
     }
 
@@ -134,5 +134,12 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
     @Override
     public void onPostUpdate(Bitmap res, ResStatus status) {
 
+    }
+
+    @Override
+    public void refresh() {
+        activities.clear();
+        NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_USER_ACTIVITIES,
+                DataHandler.getInstance().getUser(), this);
     }
 }

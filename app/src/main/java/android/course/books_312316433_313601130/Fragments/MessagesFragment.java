@@ -33,7 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessagesFragment extends Fragment implements View.OnClickListener, NetworkResListener {
+public class MessagesFragment extends Fragment implements View.OnClickListener, NetworkResListener, Refreshable {
 
     private final static String PARAM = "param";
     public static final String SENT = "sent";
@@ -126,8 +126,8 @@ public class MessagesFragment extends Fragment implements View.OnClickListener, 
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         listener = null;
     }
 
@@ -169,5 +169,16 @@ public class MessagesFragment extends Fragment implements View.OnClickListener, 
     public void addToDeletedList(Message message) {
         messages.add(message);
         adapter.notifyItemInserted(messages.size()-1);
+    }
+
+    @Override
+    public void refresh() {
+        messages.clear();
+        if (tag.equals(SENT))
+            NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_SENT_MESSAGES_JSON_REQ,
+                    DataHandler.getInstance().getUser(), this);
+        else if (tag.equals(INBOX))
+            NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_RECIEVED_MESSAGES_JSON_REQ,
+                    DataHandler.getInstance().getUser(), this);
     }
 }

@@ -2,6 +2,7 @@ package android.course.books_312316433_313601130.Activities;
 
 import android.content.Intent;
 import android.course.books_312316433_313601130.DatabaseHandkers.DataHandler;
+import android.course.books_312316433_313601130.Fragments.Refreshable;
 import android.course.books_312316433_313601130.Fragments.TabbedFragment;
 import android.course.books_312316433_313601130.Network.NetworkConnector;
 import android.course.books_312316433_313601130.R;
@@ -118,6 +119,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 launchActivity(WelcomeActivity.class, null);
                 finish();
                 return true;
+
+                case R.id.action_regresh:
+                    ((Refreshable)getSupportFragmentManager().getFragments().get(0)).refresh();
+                    return true;
 
         }
         return super.onOptionsItemSelected(item);

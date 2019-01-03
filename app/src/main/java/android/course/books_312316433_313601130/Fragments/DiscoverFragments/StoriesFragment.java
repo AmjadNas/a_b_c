@@ -9,6 +9,7 @@ import android.course.books_312316433_313601130.Activities.NewStoryActivity;
 import android.course.books_312316433_313601130.Adapters.GridSpacingItemDecoration;
 import android.course.books_312316433_313601130.Adapters.StoriesAdapter;
 import android.course.books_312316433_313601130.DatabaseHandkers.DataHandler;
+import android.course.books_312316433_313601130.Fragments.Refreshable;
 import android.course.books_312316433_313601130.Fragments.TabbedFragment;
 import android.course.books_312316433_313601130.Network.NetworkConnector;
 import android.course.books_312316433_313601130.Network.NetworkResListener;
@@ -37,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class StoriesFragment extends Fragment implements View.OnClickListener, NetworkResListener {
+public class StoriesFragment extends Fragment implements View.OnClickListener, NetworkResListener, Refreshable {
 
     private static final String TAG = "TAG";
     private static final int ADDSTORY = 1;
@@ -128,8 +129,8 @@ public class StoriesFragment extends Fragment implements View.OnClickListener, N
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         listener = null;
     }
 
@@ -223,4 +224,24 @@ public class StoriesFragment extends Fragment implements View.OnClickListener, N
         adapter.notifyItemRemoved(index);
     }
 
+    @Override
+    public void refresh() {
+        stories.clear();
+        if (tag.equals(RECOMMENDED_TAG)) {
+            NetworkConnector.getInstance().update(this, NetworkConnector.GET_ALL_ITEMS_JSON_REQ);
+        } else if (tag.equals(NEWEST_TAG)) {
+            NetworkConnector.getInstance().update(this, NetworkConnector.GET_NEWEST);
+        } else if (tag.equals(MY_STORIES_TAG))
+            NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_ITEM_USER_REQ,
+                    new User(username), this);
+        else if (tag.equals(PROFILE_STORIES))
+            NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_ITEM_USER_REQ,
+                    new User(username), this);
+        else if (tag.equals(FAVOURITES))
+            NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_FAVE_ITEM_USER_REQ,
+                    new User(username), this);
+        else if (tag.equals(CURRENT_READ))
+            NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_CUURENT_READING,
+                    new User(username), this);
+    }
 }
