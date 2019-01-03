@@ -95,6 +95,7 @@
     <string name="add_chapters">Add Chapters</string>
     <string name="chapters_list">Chapters List</string>
     <string name="socials">Socials</string>
+    <string name="channel_name">Books_channel_name</string>
 
 
     <string-array name="ratings">

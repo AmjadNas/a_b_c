@@ -3,6 +3,7 @@ package android.course.books_312316433_313601130.Services;
 import java.util.List;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -17,7 +18,9 @@ import android.course.books_312316433_313601130.Utils.CyclerManager;
 import android.course.books_312316433_313601130.Utils.DateUtil;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +31,7 @@ public class NotifyierService extends Service implements IResultReceiver {
 	public static final String BROADCAST = "android.course.a_b_c.ActivityReceiver";
 	 // Notification ID to allow for future updates
 	public static final int MY_NOTIFICATION_ID = 1;
-
+	private static final String CHANNEL_ID = "Books_channel";
 	public NotifyierService() {
 
 	}
@@ -138,6 +141,7 @@ public class NotifyierService extends Service implements IResultReceiver {
 
 		sb.append(date);
 		mNotificationIntent = new Intent(getApplicationContext(), MainActivity.class);
+		mNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		mContentIntent = PendingIntent.getActivity(getApplicationContext(), 0, mNotificationIntent,
 				Intent.FILL_IN_ACTION);
 		Intent intent = new Intent();
@@ -149,7 +153,7 @@ public class NotifyierService extends Service implements IResultReceiver {
 		// building notification
 		String contentText = sb.toString();
 
-		Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext());
+		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
 
 		notificationBuilder.setSmallIcon(R.mipmap.ic_launcher_round);
 		notificationBuilder.setAutoCancel(true);
@@ -158,10 +162,19 @@ public class NotifyierService extends Service implements IResultReceiver {
 		notificationBuilder.setGroup(type);
 		notificationBuilder.setContentIntent(mContentIntent).setSound(soundURI);
 		notificationBuilder.setVibrate(mVibratePattern);
-		notificationBuilder.setPriority(Notification.PRIORITY_HIGH); // for android 8.0+ devices
+		notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+			NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+					getString(R.string.channel_name),
+					NotificationManager.IMPORTANCE_HIGH);
+			mNotificationManager.createNotificationChannel(channel);
+		}
 
 		// Pass the Notification to the NotificationManager:
-		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(MY_NOTIFICATION_ID, notificationBuilder.build());
 	}
 
