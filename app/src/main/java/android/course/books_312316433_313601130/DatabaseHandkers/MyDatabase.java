@@ -616,7 +616,6 @@ public class MyDatabase extends SQLiteOpenHelper {
         return messages;
     }
 
-
     public List<ActivityEvent> getActivitiesForUser(String...username) {
         List<ActivityEvent> activityEvents = new ArrayList<>();
         try{
@@ -655,6 +654,10 @@ public class MyDatabase extends SQLiteOpenHelper {
         return activityEvents;
     }
 
+    /**
+     * increases the likes count
+     * @param storyTitle
+     */
     public void increaseLikes(String storyTitle) {
         try{
             Story story = getStoryByID(storyTitle);
@@ -667,6 +670,10 @@ public class MyDatabase extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * decreases the likes count
+     * @param storyTitle
+     */
     public void decreaseLikes(String storyTitle) {
         try{
             Story story = getStoryByID(storyTitle);
@@ -679,6 +686,9 @@ public class MyDatabase extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * clears all tables entries
+     */
     public void clearDatabase(){
         try {
             db.execSQL(DataBaseOperations.SQL_DELETE_FOLLOWERS);
@@ -701,6 +711,9 @@ public class MyDatabase extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * opens the database and provides a writable database object
+     */
     public void open() {
         try {
             db = getWritableDatabase();
@@ -709,6 +722,9 @@ public class MyDatabase extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * closes the database
+     */
     public void close() {
         try {
             db.close();
@@ -717,48 +733,5 @@ public class MyDatabase extends SQLiteOpenHelper {
             t.printStackTrace();
         }
     }
-
-
-    /* public LIST<String> getStoriesTags(String...title){
-        LIST<String> tags = new ArrayList<>();
-        try {
-            Chapter sc;
-            String[] args = {
-                    Constants.TAG,
-            };
-
-            Cursor c = db.query(Constants.TAGS, args, Constants.STORY_TITLE + "=?", title, null, null, null);
-
-            while (c.moveToNext()){
-                tags.add(c.getString(0));
-            }
-
-            c.close();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        return tags;
-    }
-
-    public LIST<String> getStoriesComments(String...title){
-        LIST<String> comments = new ArrayList<>();
-        try {
-            Chapter sc;
-            String[] args = {
-                    Constants.COMMENT,
-            };
-
-            Cursor c = db.query(Constants.COMMENTS, args, Constants.STORY_TITLE + "=?", title, null, null, null);
-
-            while (c.moveToNext()){
-                comments.add(c.getString(0));
-            }
-
-            c.close();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        return comments;
-    }*/
 
 }

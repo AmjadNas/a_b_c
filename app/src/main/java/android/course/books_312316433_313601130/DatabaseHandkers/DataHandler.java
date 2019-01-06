@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.course.books_312316433_313601130.Adapters.ActivitiesAdapter;
 import android.course.books_312316433_313601130.Adapters.ChapterAdpater;
 import android.course.books_312316433_313601130.Adapters.CommentsAdapter;
-import android.course.books_312316433_313601130.Adapters.MessagesAdpater;
+import android.course.books_312316433_313601130.Adapters.MessagesAdapter;
 import android.course.books_312316433_313601130.Adapters.StoriesAdapter;
 import android.course.books_312316433_313601130.Network.NetworkConnector;
 import android.course.books_312316433_313601130.Network.NetworkResListener;
@@ -53,12 +53,19 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
+    /**
+     * initializes the SQLite database object
+     * @param context
+     */
     public void initDataBase(Context context){
         db = new MyDatabase(context.getApplicationContext());
         this.context = context;
         db.open();
     }
 
+    /**
+     * method that closes the database
+     */
     public void closeDataBase(){
         if (db != null)
             db.close();
@@ -120,6 +127,20 @@ public class DataHandler implements NetworkResListener {
         return u;
     }
 
+    /**
+     * method that adds the story to the database and sends requests to the server
+     * @param txtTitles
+     * @param txtSynopsis
+     * @param txtGenre
+     * @param txtcateGories
+     * @param language
+     * @param rating
+     * @param image
+     * @param tags
+     * @param tvCharacters
+     * @param isfinished
+     * @return if the story was added successfully
+     */
     public boolean addStory(String txtTitles, String txtSynopsis, String txtGenre, String txtcateGories,
                             String language, String rating, Bitmap image, String[] tags, String[] tvCharacters,
                             boolean isfinished){
@@ -145,6 +166,12 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     * helper method is used to add stories to the database from the internet
+     * @param obj
+     * @param currReads
+     * @param faves
+     */
     private void addStory(Story obj, boolean currReads, boolean faves) {
         if (!db.insert(Constants.STORY, obj.getContentValues()))
             db.update(Constants.STORY, obj.getContentValues(), Constants.TITLE + "=?", obj.getTitle());
@@ -160,6 +187,11 @@ public class DataHandler implements NetworkResListener {
 
     }
 
+    /**
+     * helper method that inserts the image to the database
+     * @param title
+     * @param image
+     */
     private void insertImage(String title, Bitmap image){
         ContentValues cv = new ContentValues();
         byte[] arr = Utilities.getBitmapAsByteArray(image);
@@ -167,6 +199,13 @@ public class DataHandler implements NetworkResListener {
         db.update(Constants.STORY, cv, Constants.TITLE + "=?", title);
     }
 
+    /**
+     * helper method that inserts story related stuff to the database, like tags, categories
+     * @param table
+     * @param title
+     * @param col
+     * @param items
+     */
     private void insertItems(String table, String title, String col, HashSet<String> items){
         ContentValues cv;
         db.delete(table, Constants.STORY_TITLE +"=?", title);
@@ -178,6 +217,11 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
+    /**
+     * removes a story from the database
+     * @param title
+     * @return if the story was removed successfully
+     */
     public boolean removeStory(String title){
         if (title != null) {
             db.delete(Constants.READING_STORIES, Constants.STORY_TITLE + "=?", title);
@@ -197,10 +241,25 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     *
+     * @param title
+     * @return story from the database
+     */
     public Story getStoryByTitle(String title){
         return db.getStoryByID(title);
     }
 
+    /**
+     *
+     * @param table
+     * @param key
+     * @param col
+     * @param value
+     * @param orderBy
+     * @param like if the term like to be used
+     * @return list of stories dependant of the filters above
+     */
     public ArrayList<Story> getStoriesBy(String table, String key, String col, String value, String orderBy, boolean like){
         if (like) {
             key += " LIKE ?";
@@ -216,6 +275,14 @@ public class DataHandler implements NetworkResListener {
         return list;
     }
 
+    /**
+     *  overloaded method from getStoriesBy used in StoriesByActivity
+     * @param table
+     * @param where
+     * @param value
+     * @param col
+     * @return list of stories dependant of the filters above
+     */
     public ArrayList<Story> getStoriesBy(String table, String where, String value, String col){
         ArrayList<Story> list = new ArrayList<>();
         for (Story s : db.getAllStories()){
@@ -230,6 +297,13 @@ public class DataHandler implements NetworkResListener {
         return list;
     }
 
+    /**
+     * sends a message to the user
+     * @param reciever
+     * @param subject
+     * @param message
+     * @return if message was stored in database and sent
+     */
     public boolean sendMessage(String reciever, String subject, String message) {
         if (!reciever.equals(user.getUsername())) {
             Message msg = new Message(user.getUsername(), reciever, subject, message);
@@ -241,10 +315,20 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     * used for adding messages in the database from the internet
+     * @param msg
+     * @return if the message was added
+     */
     public boolean sendMessage(Message msg){
         return db.insert(Constants.MESSAGES, msg.getContentValue());
     }
 
+    /**
+     *
+     * @param username
+     * @return if the following process was successful
+     */
     public boolean followUser(String username){
         if (!username.equals(user.getUsername())) {
             ContentValues cv = new ContentValues();
@@ -258,6 +342,11 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     * \
+     * @param username
+     * @return if the unFollowing process was successful
+     */
     public boolean unFollowUser(String username){
         if (!username.equals(user.getUsername())) {
             if (db.delete(Constants.FOLLOWERS, Constants.USERNAME + " =? AND " + Constants.FOLLOWER + "=?", username, user.getUsername())) {
@@ -269,6 +358,11 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     * posts an activity event to the user's feed
+     * @param message
+     * @return if the activity was stored successfully
+     */
     public long postActivity(String message){
         ActivityEvent activityEvent = new ActivityEvent(user.getUsername(), message);
         long id = activityEvent.getId();
@@ -279,16 +373,33 @@ public class DataHandler implements NetworkResListener {
         return -1;
     }
 
+    /**
+     * inserts the activity events from the internet into the database
+     * @param ae
+     * @return if the addition was successful
+     */
     public boolean postActivity(ActivityEvent ae){
         return db.insert(Constants.ACTIVITIES, ae.getContentValues());
     }
 
+    /**
+     *
+     * @param id
+     * @return if the removal was successful
+     */
     public boolean removetActivity(String id){
         if (db.delete(Constants.REPLIES, Constants.ID + "=?", id))
             return db.delete(Constants.ACTIVITIES, Constants.ID + "=?", id);
         return false;
     }
 
+    /**
+     *
+     * @param str
+     * @param txtTitle
+     * @param txtContent
+     * @return if adding the chapters to the database successfully
+     */
     public boolean addChapterToStory(String str, String txtTitle, String txtContent){
         String[] ln = txtContent.split("\n");
 
@@ -304,10 +415,22 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     *  add the chapter to the database from the internet
+     * @param c
+     * @return if adding the chapters to the database successfully
+     */
     private boolean addChapterToStory(Chapter c){
         return db.insert(Constants.CHAPTER, c.getContentValues());
     }
 
+    /**
+     * updates the chapter
+     * @param str
+     * @param txtTitle
+     * @param txtContent
+     * @return if the update was successful
+     */
     public boolean updateChapter(String str, String txtTitle, String txtContent){
         String[] ln = txtContent.split("\n");
         Chapter c = new Chapter(str, txtTitle);
@@ -324,6 +447,12 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     *
+     * @param str story title
+     * @param txtTitle
+     * @return if the removal was successful
+     */
     public boolean removeChapter(String str, String txtTitle){
         Story s = getStoryByTitle(str);
         if (s == null)
@@ -337,6 +466,20 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     * updates the story details in the database
+     * @param txtTitles
+     * @param txtSynopsis
+     * @param txtGenre
+     * @param txtcateGories
+     * @param txtLanguage
+     * @param txtRate
+     * @param image
+     * @param tags
+     * @param chars
+     * @param isfinished
+     * @return if the update was successful
+     */
     public boolean updateStory(String txtTitles, String txtSynopsis, String txtGenre,
                                String txtcateGories, String txtLanguage, String txtRate, Bitmap image, String[] tags, String[] chars, boolean isfinished){
 
@@ -363,6 +506,14 @@ public class DataHandler implements NetworkResListener {
         return user;
     }
 
+    /**
+     * helper method updates the relevant stuff for a story
+     * @param txtTitles
+     * @param tags
+     * @param genres
+     * @param cate
+     * @param chars
+     */
     private void updateStriesStuff(String txtTitles, HashSet<String> tags, HashSet<String> genres, HashSet<String> cate, HashSet<String> chars){
 
         insertItems(Constants.TAGS, txtTitles, Constants.TAG, tags);
@@ -371,6 +522,14 @@ public class DataHandler implements NetworkResListener {
         insertItems(Constants.CHARACTERS, txtTitles, Constants.NAME, chars);
     }
 
+    /**
+     * saves the changes to user's details
+     * @param uFname
+     * @param uLname
+     * @param uEmail
+     * @param img
+     * @return if the updating the user's details was successful
+     */
     public boolean saveProfChanges(String uFname, String uLname, String uEmail, Bitmap img) {
         ContentValues cv;
         final String where = Constants.USERNAME + "=  ?";
@@ -391,11 +550,19 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     *
+     * @return all stories from database
+     */
     public List<Story> getStories() {
-       // stories =
         return db.getAllStories();
     }
 
+    /**
+     *
+     * @param username
+     * @return all stories that are in the current reading for a user
+     */
     public List<Story> getCurrentReading(String username){
         List<Story> list = new ArrayList<>();
         for (String s : db.getStringsStuff(Constants.READING_STORIES, Constants.USERNAME + "=?",
@@ -404,12 +571,22 @@ public class DataHandler implements NetworkResListener {
         return list;
     }
 
+    /**
+     *
+     * @param username
+     * @return if the user in session is following some user
+     */
     public boolean isFollowing(String username) {
         if (db.getUserFolloers(username).contains(user.getUsername()))
             return true;
         return false;
     }
 
+    /**
+     *
+     * @param title
+     * @return story's image
+     */
     public Bitmap getStoryCover(String title) {
         if (title == null)
             return null;
@@ -418,6 +595,11 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
+    /**
+     *
+     * @param title
+     * @return story's thumbnail
+     */
     public Bitmap getStoryThumbnail(String title) {
         if (title == null)
             return null;
@@ -426,10 +608,22 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
+    /**
+     *
+     * @param storyTitle
+     * @param title
+     * @return a specific chapter in a story
+     */
     public Chapter getChapter(String storyTitle, String title) {
         return db.getChapterInStory(storyTitle, title);
     }
 
+    /**
+     *
+     * @param storyTitle
+     * @param title
+     * @return list comments for a chapter
+     */
     public List<Comment> getChapterComments(String storyTitle, String title) {
         List<Comment> comments = new ArrayList<>();
         Chapter c = db.getChapterInStory(storyTitle, title);
@@ -438,7 +632,11 @@ public class DataHandler implements NetworkResListener {
         return comments;
     }
 
-
+    /**
+     *
+     * @param username
+     * @return list of stories posted by a user
+     */
     public List<Story> getUserStories(String username) {
         List<Story> list = new ArrayList<>();
         for(Story sr : db.getAllStories()){
@@ -448,6 +646,10 @@ public class DataHandler implements NetworkResListener {
         return list;
     }
 
+    /**
+     *
+     * @return list of newest stories
+     */
     public List<Story> getNewsetStories(){
         TreeSet<Story> newst = new TreeSet<>();
         int i = 0;
@@ -460,6 +662,11 @@ public class DataHandler implements NetworkResListener {
         return new ArrayList<>(newst);
     }
 
+    /**
+     *
+     * @param sTitle
+     * @return chapters list for a story
+     */
     public List<Chapter> getChaptersBytStoryTitle(String sTitle) {
         if (sTitle != null){
             return db.getChaptersForStory(sTitle);
@@ -467,19 +674,40 @@ public class DataHandler implements NetworkResListener {
         return null;
     }
 
+    /**
+     *
+     * @param username
+     * @return user's image
+     */
     public Bitmap getUserImage(String username) {
         return db.getImage(Constants.USER, Constants.USERNAME, username);
 
     }
 
+    /**
+     *
+     * @param id
+     * @return replies that was posted on an activity event
+     */
     public List<Reply> getActivityRepliesByID(long id) {
         return db.getReplies(id);
     }
 
+    /**
+     *
+     * @param id
+     * @return an activity event by it's ID
+     */
     public ActivityEvent getActivityByID(long id){
         return db.getActivity(String.valueOf(id));
     }
 
+    /**
+     * parses the json for chapters list
+     * @param adapter
+     * @param list
+     * @param res
+     */
     public void parseChapters(ChapterAdpater adapter, List<Chapter> list, JSONObject res) {
 
         try {
@@ -503,6 +731,14 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
+    /**
+     * parses the json for stories list
+     * @param adapter
+     * @param list
+     * @param currReads
+     * @param faves
+     * @param res
+     */
     public void parseStories(final StoriesAdapter adapter, List<Story> list, boolean currReads, boolean faves, JSONObject res) {
         try {
             JSONArray arr = res.getJSONArray(Constants.STORIES);
@@ -544,7 +780,13 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
-    public void parseMessages(MessagesAdpater adapter, List<Message> list, JSONObject res) {
+    /**
+     * parses the json messages list
+     * @param adapter
+     * @param list
+     * @param res
+     */
+    public void parseMessages(MessagesAdapter adapter, List<Message> list, JSONObject res) {
         try {
             JSONArray arr = res.getJSONArray(Constants.MESSAGES);
             Message obj;
@@ -563,10 +805,20 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
+    /**
+     *
+     * @return list of activity events from database
+     */
     public List<ActivityEvent> getActivities() {
         return db.getActivitiesForUser(user.getUsername());
     }
 
+    /**
+     * parses the json for activity events
+     * @param adapter
+     * @param list
+     * @param res
+     */
     public void parseActivities(ActivitiesAdapter adapter, List<ActivityEvent> list, JSONObject res) {
         try {
             JSONArray arr = res.getJSONArray(Constants.ACTIVITIES);
@@ -586,6 +838,12 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
+    /**
+     * parses the json for a chapters comments
+     * @param adapter
+     * @param list
+     * @param res
+     */
     public void parseCommentss(CommentsAdapter adapter, List<Comment> list, JSONObject res) {
         try {
             JSONArray arr = res.getJSONArray(Constants.COMMENTS);
@@ -605,10 +863,20 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
+    /**
+     * helper method that inserts a comment that is downloaded from the internet
+     * @param obj
+     */
     private void insertComment(Comment obj) {
         db.insert(Constants.COMMENTS, obj.getContentValues());
     }
 
+    /**
+     * parses the json for replies
+     * @param adapter
+     * @param list
+     * @param res
+     */
     public void parseReplies(CommentsAdapter adapter, List<Reply> list, JSONObject res) {
         try {
             JSONArray arr = res.getJSONArray(Constants.REPLIES);
@@ -628,10 +896,19 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
+    /**
+     * inserts a reply to database that is downloaded from the internet
+     * @param obj
+     */
     private void insertReply(Reply obj) {
         db.insert(Constants.REPLIES, obj.getContentValues());
     }
 
+    /**
+     * parses the json for the followeings list
+     * @param username
+     * @param res
+     */
     public void parseFolloweingsist(String username, JSONObject res) {
         try {
             JSONArray arr = res.getJSONArray(Constants.FOLLOWING);
@@ -652,6 +929,11 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
+    /**
+     * parses the json for the followers list
+     * @param username
+     * @param res
+     */
     public void parseFollowersList(String username, JSONObject res) {
 
         try {
@@ -676,14 +958,28 @@ public class DataHandler implements NetworkResListener {
 
     }
 
+    /**
+     *
+     * @return list of sent messages for the user in session
+     */
     public List<Message> getSentMessages() {
         return db.getMessages(true, user.getUsername());
     }
 
+    /**
+     *
+     * @return list of received messages for the user in session
+     */
     public List<Message> getInboxMessages() {
         return db.getMessages(false, user.getUsername());
     }
 
+    /**
+     * adds a story to a user's favourites list
+     * @param storyTitle
+     * @param upload
+     * @return if the addition was successful
+     */
     public boolean LikeStory(String storyTitle, boolean upload) {
         ContentValues cv = new ContentValues();
         cv.put(Constants.USERNAME, user.getUsername());
@@ -698,6 +994,12 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     * removes story from a user's favourites list
+     * @param storyTitle
+     * @param upload
+     * @return if the removal was successful
+     */
     public boolean unLikeStory(String storyTitle, boolean upload) {
         ContentValues cv = new ContentValues();
         cv.put(Constants.USERNAME, user.getUsername());
@@ -713,6 +1015,12 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     * adds a story to a user's current reading list
+     * @param storyTitle
+     * @param upload
+     * @return if the addition was successful
+     */
     public boolean addToCurrentReading(String storyTitle, boolean upload) {
         ContentValues cv = new ContentValues();
         cv.put(Constants.USERNAME, user.getUsername());
@@ -726,6 +1034,13 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     * inserts a comment to the database
+     * @param stTtitle
+     * @param title
+     * @param txtComment
+     * @return if the insertion was successful
+     */
     public boolean insertComment(String stTtitle, String title, String txtComment) {
         Comment comment = new Comment(title, stTtitle, user.getUsername(), txtComment);
         if (db.insert(Constants.COMMENTS, comment.getContentValues())){
@@ -735,6 +1050,12 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     * inserts a reply to the database
+     * @param id
+     * @param txtComment
+     * @return if the insertion was successful
+     */
     public boolean insertReply(long id, String txtComment) {
         Reply comment = new Reply(id, user.getUsername(), txtComment);
         if (db.insert(Constants.REPLIES, comment.getContentValues())){
@@ -744,6 +1065,11 @@ public class DataHandler implements NetworkResListener {
         return false;
     }
 
+    /**
+     *
+     * @param username
+     * @return list of user's favourite stories
+     */
     public List<Story> getFaveStories(String username) {
         List<Story> list = new ArrayList<>();
 
@@ -754,6 +1080,11 @@ public class DataHandler implements NetworkResListener {
         return list;
     }
 
+    /**
+     *
+     * @param storyTitle
+     * @return if the user in session likes a specific story
+     */
     public boolean userLikes(String storyTitle) {
         List<Story> stories = getFaveStories(user.getUsername());
         if (stories == null || stories.isEmpty())
@@ -763,6 +1094,12 @@ public class DataHandler implements NetworkResListener {
         return true;
     }
 
+    /**
+     * helper method used to refresh a given story list
+     * @param stories
+     * @param s
+     * @return the index of the replaced story
+     */
     public int replaceStory(List<Story> stories, String s) {
         try {
             int i = stories.indexOf(new Story(s));
@@ -775,6 +1112,10 @@ public class DataHandler implements NetworkResListener {
         }
     }
 
+    /**
+     *  deletes the message from database and server
+     * @param m
+     */
     public void deleteMessage(Message m) {
         if(db.delete(Constants.MESSAGES, Constants.SENDER + "=? AND "+ Constants.USERNAME + "=? AND "
                 + Constants.SUBJECT + "=? AND " +  Constants.DATE + "=?",
@@ -783,19 +1124,38 @@ public class DataHandler implements NetworkResListener {
 
     }
 
+    /**
+     *
+     * @param title
+     * @return comment count for a story
+     */
     public int getCommentsCountForStory(String title) {
         return db.getTotalCommentCountForStory(title);
     }
 
+    /**
+     *
+     * @param username
+     * @return list of user's followers
+     */
     public List<String> getUserFollowers(String username) {
         return db.getUserFolloers(username);
 
     }
 
+    /**
+     *
+     * @param username
+     * @return list of user's followings
+     */
     public List<String> getUserFollowings(String username) {
         return db.getUserFolloeings(username);
     }
 
+    /**
+     *
+     * @return if the database is closed
+     */
     public boolean dbIsClosed() {
         if (db == null)
             return true;
@@ -821,6 +1181,7 @@ public class DataHandler implements NetworkResListener {
 
     @Override
     public void onPostUpdate(JSONObject res, String table, ResStatus status) {
+        // indicate weather the request to server was a success
         if (status == ResStatus.SUCCESS){
             Toast.makeText(context.getApplicationContext(), R.string.uploadSuccess, Toast.LENGTH_SHORT).show();
         }else {
@@ -830,7 +1191,4 @@ public class DataHandler implements NetworkResListener {
     @Override
     public void onPostUpdate(Bitmap res, ResStatus status) {
     }
-
-
-
 }

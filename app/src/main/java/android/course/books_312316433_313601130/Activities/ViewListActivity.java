@@ -35,9 +35,10 @@ public class ViewListActivity extends AppCompatActivity  {
         String[] arr = null;
 
         if (intent != null){
-             i = intent.getIntExtra(Constants.VIEW_TYPE, -2);
+            i = intent.getIntExtra(Constants.VIEW_TYPE, -2);
             int resource = intent.getIntExtra(Constants.RESOURCE, -2);
-
+            // match activity content according to the resource and view type
+            // could be viewing chapter lines, picking categories or picking genres
             if (resource == Constants.STORY_LINES) {
 
                 String storyTitle = intent.getStringExtra(Constants.STORY_TITLE);
@@ -69,6 +70,7 @@ public class ViewListActivity extends AppCompatActivity  {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // inflate menu according to view type
         if (i == Constants.STORY_LINES_VIEW_TYPE)
             getMenuInflater().inflate(R.menu.social_options, menu);
         else

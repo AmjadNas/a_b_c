@@ -6,15 +6,16 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.course.books_312316433_313601130.Activities.NewMessageActivity;
 import android.course.books_312316433_313601130.Adapters.GridSpacingItemDecoration;
-import android.course.books_312316433_313601130.Adapters.MessagesAdpater;
+import android.course.books_312316433_313601130.Adapters.MessagesAdapter;
 import android.course.books_312316433_313601130.DatabaseHandkers.DataHandler;
+import android.course.books_312316433_313601130.Fragments.Listeners.DataLoadingListener;
+import android.course.books_312316433_313601130.Fragments.Listeners.Refreshable;
 import android.course.books_312316433_313601130.Network.NetworkConnector;
 import android.course.books_312316433_313601130.Network.NetworkResListener;
 import android.course.books_312316433_313601130.Network.ResStatus;
 import android.course.books_312316433_313601130.Objects.Message;
 import android.course.books_312316433_313601130.R;
 import android.course.books_312316433_313601130.Utils.Constants;
-import android.course.books_312316433_313601130.Utils.DataLoadingListener;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,13 +35,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessagesFragment extends Fragment implements View.OnClickListener, NetworkResListener, Refreshable {
-
-    private final static String PARAM = "param";
+    /**
+     * fragment type tags
+     */
     public static final String SENT = "sent";
     public static final String TRASH = "trash";
     public static final String INBOX = "inbox";
+
+    private final static String PARAM = "param";
     private String tag;
-    private MessagesAdpater adapter;
+    private MessagesAdapter adapter;
     private List<Message> messages;
     private DataLoadingListener listener;
 
@@ -82,11 +86,13 @@ public class MessagesFragment extends Fragment implements View.OnClickListener, 
 
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.include);
 
-        adapter = new MessagesAdpater(getContext(), messages);
+        adapter = new MessagesAdapter(getContext(), messages);
+        // initialize the list dependant on fragment type
         if (tag.equals(INBOX) || tag.equals(SENT))
-            adapter.setListener((MessagesAdpater.MessageAdapterListener) getParentFragment());
+            adapter.setListener((MessagesAdapter.MessageAdapterListener) getParentFragment());
         adapter.setIsNotDelete(!tag.equals(TRASH));
         adapter.setSetiSRecieved(tag.equals(INBOX));
+        // set the adapter and and the recycler layout type
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(8), true));
@@ -100,6 +106,7 @@ public class MessagesFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // handle requests when the results are OK
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK){
             if (requestCode == Constants.SEND_MESAGE && tag.equals(SENT)){
@@ -145,6 +152,8 @@ public class MessagesFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onPostUpdate(JSONObject res, String table, ResStatus status) {
+        // if there's data from the internet parse it and display it in the recyclerView
+        // else load the data from the device
         if (status == ResStatus.SUCCESS) {
             if (tag.equals(SENT) || tag.equals(INBOX)) {
                DataHandler.getInstance().parseMessages(adapter, messages,res);
@@ -166,6 +175,10 @@ public class MessagesFragment extends Fragment implements View.OnClickListener, 
 
     }
 
+    /**
+     * adds the message to the deleted list
+     * @param message to be deleted
+     */
     public void addToDeletedList(Message message) {
         messages.add(message);
         adapter.notifyItemInserted(messages.size()-1);
@@ -173,6 +186,7 @@ public class MessagesFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void refresh() {
+        // clear clear message and reload them
         messages.clear();
         if (tag.equals(SENT))
             NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_SENT_MESSAGES_JSON_REQ,

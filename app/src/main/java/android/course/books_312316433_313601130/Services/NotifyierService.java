@@ -166,7 +166,7 @@ public class NotifyierService extends Service implements IResultReceiver {
 
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // for android version 8+
 
 			NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
 					getString(R.string.channel_name),

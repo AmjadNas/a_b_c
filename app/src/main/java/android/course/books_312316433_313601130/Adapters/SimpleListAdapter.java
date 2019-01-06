@@ -35,7 +35,6 @@ public class SimpleListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-
         // adapting view type to message if sent or received
        return viewType;
     }
@@ -47,6 +46,7 @@ public class SimpleListAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        // inflating the layout according to the view type
         if (Constants.CHECKBOX_VIEW_TYPE == i){
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.checkbox_row, viewGroup,false);
             return new CheckBoxViewHolder(view);

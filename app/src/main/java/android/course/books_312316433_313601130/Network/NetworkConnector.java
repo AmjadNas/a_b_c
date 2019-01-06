@@ -48,7 +48,6 @@ public class NetworkConnector {
     private final String BASE_URL = HOST_URL + "projres";
 
     // server requests
-
     public static final String GET_ALL_ITEMS_JSON_REQ = "0";
     public static final String INSERT_ITEM_REQ = "1";
     public static final String INSERT_CHAPTER_REQ = "2";
@@ -191,6 +190,12 @@ public class NetworkConnector {
         return mImageLoader;
     }
 
+    /**
+     * request data relevant for followers
+     * @param requestCode
+     * @param username
+     * @param listener
+     */
     public void sendRequestToServer(String requestCode, String username, String follower, NetworkResListener listener){
 
         if(username==null){
@@ -215,6 +220,11 @@ public class NetworkConnector {
         }
     }
 
+    /**
+     * helper method handle upload for a story
+     * @param item
+     * @param listener
+     */
     private void uploadItemImage(final Story item, final NetworkResListener listener) {
 
         String reqUrl = HOST_URL + "web_item_manage?";
@@ -296,6 +306,12 @@ public class NetworkConnector {
         getRequestQueue().add(volleyMultipartRequest);
     }
 
+    /**
+     * request data relevant for a activity event
+     * @param requestCode
+     * @param data
+     * @param listener
+     */
     public void sendRequestToServer(String requestCode, ActivityEvent data, NetworkResListener listener){
 
         if(data==null){
@@ -328,7 +344,12 @@ public class NetworkConnector {
             }
         }
     }
-
+    /**
+     * request data relevant for a reply
+     * @param requestCode
+     * @param data
+     * @param listener
+     */
     public void sendRequestToServer(String requestCode, Reply data, NetworkResListener listener){
         if(data==null){
             return;
@@ -353,6 +374,12 @@ public class NetworkConnector {
         }
     }
 
+    /**
+     * request data relevant for a comment
+     * @param requestCode
+     * @param data
+     * @param listener
+     */
     public void sendRequestToServer(String requestCode, Comment data, NetworkResListener listener){
         if(data==null){
             return;
@@ -379,6 +406,12 @@ public class NetworkConnector {
         }
     }
 
+    /**
+     * request data relevant for a chapter
+     * @param requestCode
+     * @param data
+     * @param listener
+     */
     public void sendRequestToServer(String requestCode, Chapter data, String lines, NetworkResListener listener){
 
         if(data==null){
@@ -413,6 +446,12 @@ public class NetworkConnector {
         }
     }
 
+    /**
+     * request data relevant for a story
+     * @param requestCode
+     * @param data
+     * @param listener
+     */
     public void sendRequestToServer(String requestCode, Story data, NetworkResListener listener){
         if(data==null){
             return;
@@ -458,7 +497,11 @@ public class NetworkConnector {
         }
     }
 
-
+    /**
+     * download all data from server
+     * @param listener
+     * @param req
+     */
     public void update(NetworkResListener listener, String req){
 
         Uri.Builder builder = new Uri.Builder();
@@ -560,7 +603,11 @@ public class NetworkConnector {
             }
         }
     }
-
+    /**
+     * helper method handle upload for a user
+     * @param item
+     * @param listener
+     */
     private void uploadUserImage(final User item, final NetworkResListener listener, final String request) {
 
         String reqUrl = HOST_URL + "web_user_manage?";

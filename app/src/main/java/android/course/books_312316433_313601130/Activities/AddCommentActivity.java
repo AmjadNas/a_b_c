@@ -52,7 +52,7 @@ public class AddCommentActivity extends AppCompatActivity implements NetworkResL
 
         viewType = getIntent().getStringExtra(Constants.VIEW_TYPE);
         comment = (EditText)findViewById(R.id.edittext_chatbox);
-
+        // match the activity content according to the view type
         if (viewType != null){
             getSupportActionBar().setTitle(viewType);
             if (viewType.equals(Constants.COMMENTS)){
@@ -125,6 +125,8 @@ public class AddCommentActivity extends AppCompatActivity implements NetworkResL
 
     @Override
     public void onPostUpdate(JSONObject res, String table, ResStatus status) {
+        // if there data from the internet display it
+        // else load data from the database
         if (status == ResStatus.SUCCESS) {
             if (viewType.equals(Constants.COMMENTS))
                 DataHandler.getInstance().parseCommentss(adapter, comments, res);

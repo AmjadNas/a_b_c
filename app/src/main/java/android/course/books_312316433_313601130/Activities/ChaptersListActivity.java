@@ -57,7 +57,7 @@ public class ChaptersListActivity extends AppCompatActivity implements ChaptersF
         adapter.getDeleteFragment().addChapterToList(c);
         Intent intent = new Intent();
         intent.putExtra(Constants.STORY_TITLE, c.getStoryTitle());
-        setResult(RESULT_OK, intent);
+        setResult(RESULT_OK, intent); // indicate that something has changed
     }
 
     @Override
@@ -70,6 +70,7 @@ public class ChaptersListActivity extends AppCompatActivity implements ChaptersF
 
     @Override
     public void chaptersLoading(boolean isLoading){
+        // display loading or not according to isLoading
         ProgressBar progressBar = (ProgressBar)toolbar.findViewById(R.id.chaptersBar);
 
         if (isLoading)
@@ -80,6 +81,7 @@ public class ChaptersListActivity extends AppCompatActivity implements ChaptersF
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // call the fragment's onActivityResult manually when needed
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK)
             getSupportFragmentManager().getFragments().get(0).onActivityResult(requestCode, resultCode, data);

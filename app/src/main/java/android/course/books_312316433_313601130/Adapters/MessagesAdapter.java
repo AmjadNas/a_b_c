@@ -22,7 +22,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MessagesAdpater extends RecyclerView.Adapter<MessagesAdpater.MyHolder> {
+public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyHolder> {
 
     private boolean isNotDelete;
     private boolean isRecived;
@@ -30,7 +30,7 @@ public class MessagesAdpater extends RecyclerView.Adapter<MessagesAdpater.MyHold
     private Context context;
     private MessageAdapterListener mListener;
 
-    public MessagesAdpater(Context context, List<Message> messages) {
+    public MessagesAdapter(Context context, List<Message> messages) {
         list = messages;
         this.context = context;
 
@@ -42,13 +42,13 @@ public class MessagesAdpater extends RecyclerView.Adapter<MessagesAdpater.MyHold
 
     @NonNull
     @Override
-    public MessagesAdpater.MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MessagesAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.message_item, viewGroup, false);
         return new MyHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessagesAdpater.MyHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull MessagesAdapter.MyHolder viewHolder, int i) {
         Message a = list.get(i);
 
         Bitmap img = DataHandler.getInstance().getUserImage(a.getSender());
@@ -136,6 +136,9 @@ public class MessagesAdpater extends RecyclerView.Adapter<MessagesAdpater.MyHold
         }
     }
 
+    /**
+     * an interface that notifies of message deletion
+     */
     public interface MessageAdapterListener{
         void OnMessageDeleted(Message message);
     }

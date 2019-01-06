@@ -69,7 +69,7 @@ public class NewChapterActivity extends AppCompatActivity {
     private void saveChapter() {
         String txtTitle = title.getEditText().getText().toString();
         String txtContent = content.getEditText().getText().toString();
-
+        // update chapter
         if (currentTitle != null && !txtContent.isEmpty()) {
             if (DataHandler.getInstance().updateChapter(str, currentTitle, txtContent)) {
                 Toast.makeText(this, getString(R.string.itemupdated), Toast.LENGTH_SHORT).show();
@@ -80,7 +80,7 @@ public class NewChapterActivity extends AppCompatActivity {
                 finish();
             } else
                 Toast.makeText(this, getString(R.string.itemnotupdated), Toast.LENGTH_SHORT).show();
-        } else if (!txtTitle.isEmpty() && !txtContent.isEmpty()) {
+        } else if (!txtTitle.isEmpty() && !txtContent.isEmpty()) { // add new chapter
 
             if (DataHandler.getInstance().addChapterToStory(str, txtTitle, txtContent)) {
                 Toast.makeText(this, getString(R.string.itemupdated), Toast.LENGTH_SHORT).show();

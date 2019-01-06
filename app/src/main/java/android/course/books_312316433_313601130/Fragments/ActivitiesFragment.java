@@ -8,13 +8,14 @@ import android.course.books_312316433_313601130.Activities.NewEventActivity;
 import android.course.books_312316433_313601130.Adapters.ActivitiesAdapter;
 import android.course.books_312316433_313601130.Adapters.GridSpacingItemDecoration;
 import android.course.books_312316433_313601130.DatabaseHandkers.DataHandler;
+import android.course.books_312316433_313601130.Fragments.Listeners.DataLoadingListener;
+import android.course.books_312316433_313601130.Fragments.Listeners.Refreshable;
 import android.course.books_312316433_313601130.Network.NetworkConnector;
 import android.course.books_312316433_313601130.Network.NetworkResListener;
 import android.course.books_312316433_313601130.Network.ResStatus;
 import android.course.books_312316433_313601130.Objects.ActivityEvent;
 import android.course.books_312316433_313601130.R;
 import android.course.books_312316433_313601130.Utils.Constants;
-import android.course.books_312316433_313601130.Utils.DataLoadingListener;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,8 +35,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivitiesFragment extends Fragment implements View.OnClickListener, NetworkResListener, Refreshable {
-
+    /**
+     * activity event add request
+     */
     private static final int ADD_ACTIVITY = 555;
+
     private ActivitiesAdapter adapter;
     private List<ActivityEvent> activities;
     private DataLoadingListener listener;
@@ -51,6 +55,7 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // inflate the layout and initialize the views in the fragment
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_stories, container, false);
         initRecycler(view);
         return view;
@@ -58,7 +63,7 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
 
     private void initRecycler(View view) {
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.include);
-
+        // set the adapter and and the recycler layout type
         adapter = new ActivitiesAdapter(getContext(), activities);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -87,6 +92,7 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // check if an activity event was added
         if (resultCode == Activity.RESULT_OK){
             if (requestCode == ADD_ACTIVITY){
                 long id = data.getLongExtra(Constants.ID, -1);
@@ -102,6 +108,7 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        // check if the parent activity implements the interface
         try {
             listener = (DataLoadingListener)context;
         }catch (Exception e){}
@@ -110,6 +117,7 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
     @Override
     public void onDetach() {
         super.onDetach();
+        // avoid leaks
         listener = null;
     }
 
@@ -121,6 +129,8 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onPostUpdate(JSONObject res, String table, ResStatus status) {
+        // if there's data from the internet parse it and display it in the recyclerView
+        // else load the data from the device
         if (status == ResStatus.SUCCESS){
             DataHandler.getInstance().parseActivities(adapter, activities, res);
         }else {

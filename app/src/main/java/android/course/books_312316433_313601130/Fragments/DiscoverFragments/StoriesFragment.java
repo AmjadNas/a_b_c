@@ -9,7 +9,7 @@ import android.course.books_312316433_313601130.Activities.NewStoryActivity;
 import android.course.books_312316433_313601130.Adapters.GridSpacingItemDecoration;
 import android.course.books_312316433_313601130.Adapters.StoriesAdapter;
 import android.course.books_312316433_313601130.DatabaseHandkers.DataHandler;
-import android.course.books_312316433_313601130.Fragments.Refreshable;
+import android.course.books_312316433_313601130.Fragments.Listeners.Refreshable;
 import android.course.books_312316433_313601130.Fragments.TabbedFragment;
 import android.course.books_312316433_313601130.Network.NetworkConnector;
 import android.course.books_312316433_313601130.Network.NetworkResListener;
@@ -18,7 +18,7 @@ import android.course.books_312316433_313601130.Objects.Story;
 import android.course.books_312316433_313601130.Objects.User;
 import android.course.books_312316433_313601130.R;
 import android.course.books_312316433_313601130.Utils.Constants;
-import android.course.books_312316433_313601130.Utils.DataLoadingListener;
+import android.course.books_312316433_313601130.Fragments.Listeners.DataLoadingListener;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,9 +39,9 @@ import java.util.List;
 
 
 public class StoriesFragment extends Fragment implements View.OnClickListener, NetworkResListener, Refreshable {
-
-    private static final String TAG = "TAG";
-    private static final int ADDSTORY = 1;
+    /**
+     * fragment type tags
+     */
     public final static String NEWEST_TAG = "newest";
     public final static String RECOMMENDED_TAG = "recommended";
     public static final String MY_STORIES_TAG = "myStories";
@@ -49,6 +49,10 @@ public class StoriesFragment extends Fragment implements View.OnClickListener, N
     public static final String PROFILE_STORIES = "profile";
     public static final String CURRENT_READ = "reading";
     public static final String FAVOURITES = "favourite";
+
+    private static final String TAG = "TAG";
+    private static final int ADDSTORY = 1;
+
     private String tag;
     private StoriesAdapter adapter;
     private List<Story> stories;
@@ -56,7 +60,12 @@ public class StoriesFragment extends Fragment implements View.OnClickListener, N
     private String username;
 
     public StoriesFragment(){}
-
+    /**
+     * factory method to initialize fragments
+     * @param tag fragment type tag
+     * @param user
+     * @return a new instance of StoriesFragment
+     */
     public static StoriesFragment newInstance(@NonNull String tag, String user){
         StoriesFragment fragment = new StoriesFragment();
         Bundle args = new Bundle();
@@ -72,7 +81,7 @@ public class StoriesFragment extends Fragment implements View.OnClickListener, N
         if (getArguments() != null) {
             tag = getArguments().getString(TAG);
             username = getArguments().getString(Constants.USERNAME);
-
+            // initialize the list dependant on fragment type
             if (tag.equals(RECOMMENDED_TAG)) {
                 NetworkConnector.getInstance().update(this, NetworkConnector.GET_ALL_ITEMS_JSON_REQ);
             } else if (tag.equals(NEWEST_TAG)) {
@@ -100,7 +109,7 @@ public class StoriesFragment extends Fragment implements View.OnClickListener, N
         View view = inflater.inflate(R.layout.fragment_stories, container, false);
 
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.include);
-
+        // set the adapter and and the recycler layout type
         adapter = new StoriesAdapter(getContext(), stories, tag.equals(MY_STORIES_TAG));
         adapter.setDelete(tag.equals(DELETED_TAG));
         recyclerView.setAdapter(adapter);
@@ -113,9 +122,8 @@ public class StoriesFragment extends Fragment implements View.OnClickListener, N
         if (tag.equals(DELETED_TAG) || tag.equals(CURRENT_READ)
                 || tag.equals(PROFILE_STORIES) || tag.equals(FAVOURITES))
             fab.hide();
-
+        // add click listener for the FloatingActionButton that launches new story activity
         fab.setOnClickListener(this);
-        //initPager(view);
 
         return view;
     }
@@ -143,6 +151,7 @@ public class StoriesFragment extends Fragment implements View.OnClickListener, N
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // handle request in case of a chapter was added,  or a chapter was edited
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK){
             if (requestCode == ADDSTORY){
@@ -182,6 +191,8 @@ public class StoriesFragment extends Fragment implements View.OnClickListener, N
 
     @Override
     public void onPostUpdate(JSONObject res, String table, ResStatus status) {
+        // if there's data from the internet parse it and display it in the recyclerView
+        // else load the data from the device
         if (status == ResStatus.SUCCESS) {
             DataHandler.getInstance().parseStories(adapter, stories, tag.equals(CURRENT_READ), tag.equals(FAVOURITES), res);
         }else {

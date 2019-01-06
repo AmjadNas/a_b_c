@@ -212,6 +212,7 @@ public class ViewStoryActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // update the views in case of data change
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == Constants.COMMENT_CHAPTER){
             String sTitle = data.getStringExtra(Constants.STORY_TITLE);

@@ -75,6 +75,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyHo
                     context.startActivity(intent);
                 }
             });
+            // set on long click to enable the user to un-follow a user
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

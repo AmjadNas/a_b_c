@@ -12,12 +12,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+/**
+ * fragment page adapter
+ */
 public class TabbedFragmentsAdapter extends FragmentPagerAdapter {
 
     private final String username;
     private String[] header;
     private int navLocation;
-
 
     public TabbedFragmentsAdapter(Context context, int num, FragmentManager fm) {
         super(fm);

@@ -35,7 +35,6 @@ public class ListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             param = getArguments().getInt(TAG, -1);
-            // mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -69,13 +68,5 @@ public class ListFragment extends Fragment {
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-
     }
 }

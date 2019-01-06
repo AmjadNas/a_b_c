@@ -2,13 +2,13 @@ package android.course.books_312316433_313601130.Activities;
 
 import android.content.Intent;
 import android.course.books_312316433_313601130.DatabaseHandkers.DataHandler;
-import android.course.books_312316433_313601130.Fragments.Refreshable;
+import android.course.books_312316433_313601130.Fragments.Listeners.Refreshable;
 import android.course.books_312316433_313601130.Fragments.TabbedFragment;
 import android.course.books_312316433_313601130.Network.NetworkConnector;
 import android.course.books_312316433_313601130.R;
 import android.course.books_312316433_313601130.Services.NotifyierService;
 import android.course.books_312316433_313601130.Utils.Constants;
-import android.course.books_312316433_313601130.Utils.DataLoadingListener;
+import android.course.books_312316433_313601130.Fragments.Listeners.DataLoadingListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,8 +24,6 @@ import android.widget.ProgressBar;
 
 import java.util.List;
 import java.util.Stack;
-
-import static android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, DataLoadingListener {
 

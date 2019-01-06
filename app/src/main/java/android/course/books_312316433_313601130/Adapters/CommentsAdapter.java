@@ -38,6 +38,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int i) {
+        // bind the data from the replies list if not null
+        // else bind from comments list
         if (replies != null){
 
             viewHolder.message.setText(replies.get(i).getMessage());

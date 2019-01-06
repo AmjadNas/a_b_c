@@ -8,6 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+/**
+ * fragment page adapter
+ */
 public class ProfileFragmentsAdapter extends FragmentPagerAdapter {
 
     private final String[] header;

@@ -147,11 +147,6 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ParentVi
                 PopupMenu popup = new PopupMenu(context, v);
                 MenuInflater inflater = popup.getMenuInflater();
 
-                /*if (grid)
-                    inflater.inflate(R.menu.item_fave_menu, popup.getMenu());
-                else if(faveAdapter || viewOnly)
-                    inflater.inflate(R.menu.item_view_menu, popup.getMenu());
-                else*/
                 inflater.inflate(R.menu.menu_item_manage, popup.getMenu());
 
                 popup.setOnMenuItemClickListener(new MenuClickListener(i));
@@ -243,6 +238,9 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ParentVi
         builder.create().show();
     }
 
+    /**
+     * an interface used to notify of story deletion
+     */
     public interface StoryAdapterListener {
        void OnStoryDeleted(Story s);
     }

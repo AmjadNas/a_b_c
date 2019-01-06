@@ -3,7 +3,7 @@ package android.course.books_312316433_313601130.Activities;
 import android.course.books_312316433_313601130.Fragments.FollowFragment;
 import android.course.books_312316433_313601130.R;
 import android.course.books_312316433_313601130.Utils.Constants;
-import android.course.books_312316433_313601130.Utils.DataLoadingListener;
+import android.course.books_312316433_313601130.Fragments.Listeners.DataLoadingListener;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;

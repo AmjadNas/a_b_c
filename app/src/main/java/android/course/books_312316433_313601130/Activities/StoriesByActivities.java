@@ -59,6 +59,7 @@ public class StoriesByActivities extends AppCompatActivity  {
     private void initRecyclerView() {
         progressBar.setVisibility(ProgressBar.VISIBLE);
         String key;
+        //matches the type of filter the stories to be loaded by
         if (type.equals(Constants.CATEGORIES))
             key = Constants.CATEGORY;
         else

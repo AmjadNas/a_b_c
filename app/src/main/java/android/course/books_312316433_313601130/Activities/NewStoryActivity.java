@@ -157,7 +157,7 @@ public class NewStoryActivity extends AppCompatActivity implements LoadImageAsyn
         boolean a = txtGenre.equals(getString(R.string.click_here_to_add));
         boolean b = txtcateGories.equals(getString(R.string.click_here_to_add));
         isfinished = finished.isChecked();
-
+        // update story
         if (story != null && image != null && tags != null && !txtSynopsis.isEmpty() && !a && !b
                 && chars != null){
             if (DataHandler.getInstance().updateStory(story.getTitle(), txtSynopsis, txtGenre, txtcateGories,
@@ -170,7 +170,7 @@ public class NewStoryActivity extends AppCompatActivity implements LoadImageAsyn
             }else {
                 Toast.makeText(this, getString(R.string.itemnotupdated), Toast.LENGTH_SHORT).show();
             }
-        }else if (image != null && tags != null && !txtTitles.isEmpty() && !txtSynopsis.isEmpty() && !a && !b
+        }else if (image != null && tags != null && !txtTitles.isEmpty() && !txtSynopsis.isEmpty() && !a && !b // add new story
                 && chars != null){
             if (DataHandler.getInstance().addStory(txtTitles, txtSynopsis, txtGenre, txtcateGories,
                         txtLanguage,txtRate, image, tags, chars, isfinished)) {

@@ -107,11 +107,6 @@ public class ChapterAdpater extends RecyclerView.Adapter<ChapterAdpater.ChapterH
                 PopupMenu popup = new PopupMenu(context, v);
                 MenuInflater inflater = popup.getMenuInflater();
 
-                /*if (grid)
-                    inflater.inflate(R.menu.item_fave_menu, popup.getMenu());
-                else if(faveAdapter || viewOnly)
-                    inflater.inflate(R.menu.item_view_menu, popup.getMenu());
-                else*/
                 inflater.inflate(R.menu.menu_item_manage, popup.getMenu());
 
                 popup.setOnMenuItemClickListener(new MenuClickListener(i));

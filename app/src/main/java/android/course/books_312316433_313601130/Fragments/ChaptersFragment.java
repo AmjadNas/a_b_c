@@ -41,12 +41,13 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class ChaptersFragment extends Fragment implements ChapterAdpater.ChapterAdapterListener, NetworkResListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    /**
+     * fragment type tags
+     */
     public final static String DELETED = "deleted";
     public final static String LIST = "list";
-    // TODO: Rename and change types of parameters
+    private static final String ARG_PARAM1 = "param1";
+
     private String mParam1;
     private String sTitle;
     private List<Chapter> chapters;
@@ -65,7 +66,6 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
      * @param o
      * @return A new instance of fragment ChaptersFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ChaptersFragment newInstance(String param1, String o) {
         ChaptersFragment fragment = new ChaptersFragment();
         Bundle args = new Bundle();
@@ -95,12 +95,12 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chapters_list, container, false);
+        // initialize the list dependant on fragment type
         if (mParam1.equals(DELETED)){
             initFab(view, false);
         }else if (mParam1.equals(LIST)) {
             initFab(view, true);
         }
-
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.include);
         adapter = new ChapterAdpater(getContext(), chapters, this, mParam1.equals(DELETED));
         recyclerView.setAdapter(adapter);
@@ -127,6 +127,7 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // handle request in case of a comment was added, a chapter was added or a chapter was edited
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             String title = data.getStringExtra(Constants.TITLE);
@@ -160,6 +161,7 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        // check if the parent activity implements the interface
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -171,6 +173,7 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
     @Override
     public void onDetach() {
         super.onDetach();
+        // avoid leaks
         mListener = null;
     }
 
@@ -200,8 +203,9 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
 
     @Override
     public void onPostUpdate(JSONObject res, String table, ResStatus status) {
+        // if there's data from the internet parse it and display it in the recyclerView
+        // else load the data from the device
         if (status == ResStatus.SUCCESS){
-
             DataHandler.getInstance().parseChapters(adapter, chapters, res);
         }else {
             chapters = DataHandler.getInstance().getChaptersBytStoryTitle(sTitle);
@@ -221,10 +225,6 @@ public class ChaptersFragment extends Fragment implements ChapterAdpater.Chapter
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
         void onItemDeleted(Chapter c);

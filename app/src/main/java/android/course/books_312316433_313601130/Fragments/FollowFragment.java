@@ -5,11 +5,11 @@ import android.content.res.Resources;
 import android.course.books_312316433_313601130.Adapters.FollowersAdapter;
 import android.course.books_312316433_313601130.Adapters.GridSpacingItemDecoration;
 import android.course.books_312316433_313601130.DatabaseHandkers.DataHandler;
+import android.course.books_312316433_313601130.Fragments.Listeners.DataLoadingListener;
 import android.course.books_312316433_313601130.Network.NetworkResListener;
 import android.course.books_312316433_313601130.Network.ResStatus;
 import android.course.books_312316433_313601130.R;
 import android.course.books_312316433_313601130.Utils.Constants;
-import android.course.books_312316433_313601130.Utils.DataLoadingListener;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,15 +21,16 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FollowFragment extends Fragment implements NetworkResListener {
-
+public class FollowFragment extends Fragment {
+    /**
+     * fragment type tags
+     */
     public static final String FOLLOWERS = Constants.FOLLOWERS;
     public static final String FOLLOWING = Constants.FOLLOWING;
 
@@ -41,6 +42,12 @@ public class FollowFragment extends Fragment implements NetworkResListener {
 
     public FollowFragment(){}
 
+    /**
+     * factory method to initialize fragments
+     * @param tag fragment type tag
+     * @param username
+     * @return a new instance of FollowFragment
+     */
     public static FollowFragment newInstance(String tag, String username){
         FollowFragment fragment = new FollowFragment();
         Bundle args = new Bundle();
@@ -56,13 +63,7 @@ public class FollowFragment extends Fragment implements NetworkResListener {
         if (getArguments() != null){
             tag = getArguments().getString(Constants.TAG);
             username = getArguments().getString(Constants.USERNAME);
-         //   if (tag.equals(FOLLOWERS))
-              //  NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_USER_FOLLOWERS,
-                    //    new User(username), this);
-          ///  else if (tag.equals(FOLLOWING)) {
-              //  NetworkConnector.getInstance().sendRequestToServer(NetworkConnector.GET_USER_FOLLOWING,
-                      //  new User(username), this);
-          //  }
+
             list = new ArrayList<>();
         }
     }
@@ -70,6 +71,7 @@ public class FollowFragment extends Fragment implements NetworkResListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        // check if the parent activity implements the interface
         if (context instanceof DataLoadingListener)
             mListener = (DataLoadingListener)context;
     }
@@ -77,12 +79,14 @@ public class FollowFragment extends Fragment implements NetworkResListener {
     @Override
     public void onDetach() {
         super.onDetach();
+        // avoid leaks
         mListener = null;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // inflate the layout and initialize the views in the fragment
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         initRecyclerView(view);
         return view;
@@ -91,13 +95,13 @@ public class FollowFragment extends Fragment implements NetworkResListener {
     private void initRecyclerView(View v){
         if (mListener != null)
             mListener.onLoadingStart();
-
+        // initialize the list dependant on fragment type
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.menuList);
         if (tag.equals(FOLLOWERS))
             list = DataHandler.getInstance().getUserFollowers(username);
         else if (tag.equals(FOLLOWING))
             list = DataHandler.getInstance().getUserFollowings(username);
-
+        // set the adapter and and the recycler layout type
         adapter = new FollowersAdapter(getContext(), list, tag.equals(FOLLOWING));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(8), true));
@@ -113,29 +117,5 @@ public class FollowFragment extends Fragment implements NetworkResListener {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
-
-    @Override
-    public void onPreUpdate() {
-
-    }
-
-    @Override
-    public void onPostUpdate(JSONObject res, String table, ResStatus status) {
-     //   if (status == ResStatus.SUCCESS){
-          //  if (tag.equals(FOLLOWERS))
-              //  DataHandler.getInstance().parseFollowersList(res);
-          //  else if (tag.equals(FOLLOWING))
-              //  DataHandler.getInstance().parseFolloweingsist(res);
-      //  }else {
-
-        //}
-
-    }
-
-    @Override
-    public void onPostUpdate(Bitmap res, ResStatus status) {
-
-    }
-
 
 }
