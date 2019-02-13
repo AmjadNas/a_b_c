@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">books_312316433_313601130</string>
+    <string name="app_name">books</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Books</string>
     <string name="title_library">Library</string>

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="android.course.books_312316433_313601130.Activities.NewEventActivity"
+    tools:context="android.course.books.Activities.NewEventActivity"
     android:orientation="vertical">
 
 

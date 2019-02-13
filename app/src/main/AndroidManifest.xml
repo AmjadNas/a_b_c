@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.course.books_312316433_313601130">
+    package="android.course.books">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -13,7 +13,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
         <activity
-            android:name="android.course.books_312316433_313601130.Activities.MainActivity"
+            android:name="android.course.books.Activities.MainActivity"
             android:label="@string/title_home"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -23,40 +23,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="android.course.books_312316433_313601130.Activities.NewStoryActivity"
+        <activity android:name="android.course.books.Activities.NewStoryActivity"
             android:label="@string/postStory"/>
-        <activity android:name="android.course.books_312316433_313601130.Activities.AddCommentActivity" />
+        <activity android:name="android.course.books.Activities.AddCommentActivity" />
         <activity
-            android:name="android.course.books_312316433_313601130.Activities.ProfileActivity"
+            android:name="android.course.books.Activities.ProfileActivity"
             android:theme="@style/TranparentOverLay" />
-        <activity android:name="android.course.books_312316433_313601130.Activities.ViewListActivity" />
-        <activity android:name="android.course.books_312316433_313601130.Activities.NewChapterActivity" />
-        <activity android:name="android.course.books_312316433_313601130.Activities.EditProfileActivity"
+        <activity android:name="android.course.books.Activities.ViewListActivity" />
+        <activity android:name="android.course.books.Activities.NewChapterActivity" />
+        <activity android:name="android.course.books.Activities.EditProfileActivity"
             android:label="@string/editProfile"/>
-        <activity android:name="android.course.books_312316433_313601130.Activities.WelcomeActivity"
+        <activity android:name="android.course.books.Activities.WelcomeActivity"
             android:label="@string/logIn"/>
 
         <activity
-            android:name="android.course.books_312316433_313601130.Activities.ChaptersListActivity"
+            android:name="android.course.books.Activities.ChaptersListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="android.course.books_312316433_313601130.Activities.ViewStoryActivity"
+            android:name="android.course.books.Activities.ViewStoryActivity"
             android:theme="@style/TranparentOverLay" />
-        <activity android:name="android.course.books_312316433_313601130.Activities.NewMessageActivity"
+        <activity android:name="android.course.books.Activities.NewMessageActivity"
             android:label="@string/newMessage"/>
-        <activity android:name="android.course.books_312316433_313601130.Activities.NewEventActivity"
+        <activity android:name="android.course.books.Activities.NewEventActivity"
             android:label="@string/postActivity"/>
-        <activity android:name="android.course.books_312316433_313601130.Activities.SearchActivity"
+        <activity android:name="android.course.books.Activities.SearchActivity"
             android:label="@string/search_for_story"/>
         <activity
-            android:name="android.course.books_312316433_313601130.Activities.StoriesByActivities"
+            android:name="android.course.books.Activities.StoriesByActivities"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="android.course.books_312316433_313601130.Activities.FollowActivity"
+        <activity android:name="android.course.books.Activities.FollowActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="android.course.books_312316433_313601130.fileprovider"
+            android:authorities="android.course.books.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data
@@ -66,12 +66,12 @@
         </provider>
 
         <service
-            android:name="android.course.books_312316433_313601130.Services.NotifyierService"
+            android:name="android.course.books.Services.NotifyierService"
             android:enabled="true"
             android:process=":remote" />
 
         <receiver
-            android:name="android.course.books_312316433_313601130.Services.BootStartUpReciever"
+            android:name="android.course.books.Services.BootStartUpReciever"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

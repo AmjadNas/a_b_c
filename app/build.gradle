@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "android.course.books_312316433_313601130"
+        applicationId "android.course.books"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
